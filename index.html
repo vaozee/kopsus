@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KopSUS App</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<style>
+:root{
+  --sb:#0a1f12;--sb2:#0d2818;--pr:#22c55e;--pr2:#16401f;--pr3:#1a9d4b;
+  --sc:#d4af37;--td:#e8f5e9;--tl:#cfe8d6;--bc:#1c3d26;--cb:#0f2a18;
+  --hb:#1a4d2e;--pg:#081a0e;--ib:#0a1f12;--th:#0a1f12;
+  --na1:rgba(34,197,94,.35);--na2:rgba(212,175,55,.15);
+  --nh1:rgba(34,197,94,.18);--nh2:rgba(212,175,55,.08);
+  --er:#ef4444;--wa:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto',sans-serif;background:var(--pg);color:var(--td);}
+
+/* LOGIN */
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#081a0e,#0d2818,#081a0e);}
+.lc{background:linear-gradient(160deg,#0f2a18,#0a1f12);border:1px solid var(--bc);border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.5);padding:40px;width:100%;max-width:400px;}
+.lc-logo{text-align:center;margin-bottom:8px;}
+.lc-logo img{width:72px;height:72px;object-fit:contain;border-radius:50%;}
+.lc-title{text-align:center;font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.5rem;color:var(--sc);margin:12px 0 4px;}
+.lc-sub{text-align:center;color:#8fae9a;font-size:.85rem;margin-bottom:8px;}
+.lc-note{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.3);color:var(--sc);padding:8px 12px;border-radius:6px;font-size:.78rem;text-align:center;margin-bottom:18px;}
+.lc-err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:#f87171;padding:10px;border-radius:6px;font-size:.85rem;margin-bottom:14px;display:none;align-items:center;gap:8px;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;color:var(--tl);font-size:.88rem;font-weight:500;margin-bottom:5px;}
+.fc{width:100%;padding:11px 13px;border:1px solid var(--bc);border-radius:6px;background:var(--ib);color:var(--tl);font-size:.93rem;font-family:'Roboto',sans-serif;}
+.fc:focus{outline:none;border-color:var(--pr);box-shadow:0 0 0 2px rgba(34,197,94,.2);}
+.lb{width:100%;padding:12px;background:var(--pr);color:#0a1f12;border:none;border-radius:6px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.96rem;cursor:pointer;margin-top:6px;transition:.3s;}
+.lb:hover{background:var(--pr3);}
+.lc-foot{text-align:center;margin-top:20px;color:#8fae9a;font-size:.75rem;}
+
+/* APP */
+#appPage{display:none;}
+.dev-banner{background:var(--sc);color:#0a1f12;text-align:center;padding:7px;font-weight:600;font-size:.82rem;}
+.sidebar{width:260px;position:fixed;top:0;left:0;height:100vh;background:linear-gradient(180deg,var(--sb),var(--sb2));border-right:1px solid var(--bc);box-shadow:0 0 20px rgba(0,0,0,.4);overflow-y:auto;z-index:1000;scrollbar-width:thin;scrollbar-color:var(--bc) transparent;transition:width .3s ease;}
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:var(--bc);border-radius:4px;}
+.at{font-family:'Montserrat',sans-serif;font-weight:600;font-size:1.3rem;padding:22px 18px;border-bottom:1px solid var(--bc);color:var(--sc);display:flex;align-items:center;white-space:nowrap;overflow:hidden;}
+.alogo{width:30px;height:30px;object-fit:contain;margin-right:10px;flex-shrink:0;border-radius:50%;}
+.sui{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--bc);}
+.sun{font-family:'Poppins',sans-serif;font-weight:500;font-size:.88rem;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sur{font-size:.74rem;color:var(--tl);opacity:.8;}
+.nav{padding:12px 0;}
+.ni{display:flex;align-items:center;padding:11px 18px;color:var(--tl);text-decoration:none;font-family:'Poppins',sans-serif;font-size:.92rem;border-left:4px solid transparent;cursor:pointer;transition:.25s;white-space:nowrap;overflow:hidden;}
+.ni:hover{background:linear-gradient(90deg,var(--nh1),var(--nh2));border-left-color:var(--pr);color:#fff;}
+.ni.active{background:linear-gradient(90deg,var(--na1),var(--na2));border-left-color:var(--sc);color:#fff;}
+.ni i{width:22px;margin-right:10px;text-align:center;flex-shrink:0;}
+.ni span{overflow:hidden;text-overflow:ellipsis;}
+.stb{position:fixed;top:20px;left:246px;width:26px;height:26px;border-radius:50%;background:var(--cb);border:1px solid var(--bc);color:var(--sc);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1001;box-shadow:0 2px 6px rgba(0,0,0,.35);transition:left .3s ease;font-size:.75rem;}
+.stb:hover{background:var(--hb);color:#fff;}
+
+/* COLLAPSED */
+.sidebar.col{width:72px;}
+.sidebar.col~.mc{margin-left:72px;}
+.sidebar.col .at{padding:20px 0;justify-content:center;}
+.sidebar.col .at span,.sidebar.col .ni span,.sidebar.col .sui div{display:none;}
+.sidebar.col .alogo{margin-right:0;}
+.sidebar.col .ni{justify-content:center;padding:11px 0;}
+.sidebar.col .ni i{margin-right:0;font-size:1.1rem;}
+.sidebar.col .sui{justify-content:center;padding:12px 4px;}
+
+/* MAIN */
+.mc{margin-left:260px;min-height:100vh;background:var(--pg);transition:margin-left .3s ease;}
+.content{padding:18px 28px 32px;}
+
+/* PAGE HEADER */
+.ph{margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bc);}
+.ph h1{font-family:'Montserrat',sans-serif;font-weight:600;color:var(--sc);margin-bottom:3px;font-size:1.45rem;}
+.ph p{color:#8fae9a;font-size:.88rem;}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;margin-bottom:20px;}
+.kpi{background:linear-gradient(160deg,var(--cb),#0a1f12);border:1px solid var(--bc);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);padding:14px;min-height:85px;display:flex;flex-direction:column;justify-content:space-between;}
+.kpi h3{font-size:.8rem;font-weight:500;color:var(--tl);display:flex;align-items:center;gap:5px;}
+.kpi h3 i{color:var(--pr);}
+.kpi h2{font-size:1.1rem;font-weight:600;color:#fff;margin-top:4px;word-break:break-all;}
+
+/* CHARTS */
+.cr{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:18px;}
+.cc{background:linear-gradient(160deg,var(--cb),#0a1f12);border:1px solid var(--bc);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);padding:16px;flex:1;min-width:260px;}
+.cc h3{font-size:.92rem;margin-bottom:8px;color:var(--sc);}
+
+/* TABLE CARD */
+.tc{background:linear-gradient(160deg,var(--cb),#0a1f12);border:1px solid var(--bc);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);padding:18px;margin-bottom:18px;overflow:hidden;}
+.tc h3{font-size:1rem;color:var(--sc);margin-bottom:14px;font-family:'Montserrat',sans-serif;}
+.ta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.si{padding:8px 12px;border:1px solid var(--bc);border-radius:6px;background:var(--ib);color:var(--tl);font-size:.84rem;width:210px;}
+.si:focus{outline:none;border-color:var(--pr);}
+.btn-grp{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{padding:8px 14px;border:none;border-radius:6px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.83rem;font-weight:500;display:inline-flex;align-items:center;gap:5px;transition:.2s;}
+.btn-pr{background:var(--pr);color:#0a1f12;}.btn-pr:hover{background:var(--pr3);}
+.btn-sc{background:var(--sc);color:#0a1f12;}.btn-sc:hover{background:#c19f2e;}
+.btn-ol{background:transparent;border:1px solid var(--bc);color:var(--tl);}.btn-ol:hover{background:var(--pr2);}
+.btn-dn{background:#dc2626;color:#fff;}.btn-dn:hover{background:#b91c1c;}
+.btn-sm{padding:4px 9px;font-size:.76rem;}
+.tw{width:100%;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+thead th{background:var(--th);color:var(--sc);padding:11px 12px;text-align:left;font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:500;white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--bc);transition:background .15s;}
+tbody tr:hover{background:rgba(34,197,94,.05);}
+tbody td{padding:10px 12px;font-size:.82rem;color:var(--tl);white-space:nowrap;}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.71rem;font-weight:600;}
+.bg{background:rgba(34,197,94,.15);color:#22c55e;}
+.by{background:rgba(212,175,55,.15);color:var(--sc);}
+.br{background:rgba(239,68,68,.15);color:#f87171;}
+.bb{background:rgba(59,130,246,.15);color:#60a5fa;}
+.bo{background:rgba(249,115,22,.15);color:#fb923c;}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:2000;align-items:center;justify-content:center;padding:16px;}
+.mo.open{display:flex;}
+.mb{background:var(--cb);border:1px solid var(--bc);border-radius:12px;padding:24px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;}
+.mb h2{color:var(--sc);font-family:'Montserrat',sans-serif;margin-bottom:18px;font-size:1.1rem;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg2{margin-bottom:12px;}
+.fg2 label{display:block;color:var(--tl);font-size:.8rem;font-weight:500;margin-bottom:4px;}
+.fg2 input,.fg2 select,.fg2 textarea{width:100%;padding:8px 10px;border:1px solid var(--bc);border-radius:6px;background:var(--ib);color:var(--tl);font-size:.85rem;font-family:'Roboto',sans-serif;}
+.fg2 input:focus,.fg2 select:focus,.fg2 textarea:focus{outline:none;border-color:var(--pr);}
+.fg2 textarea{resize:vertical;min-height:60px;}
+.ma{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap;}
+
+/* DETAIL TABLE */
+.dt-card{background:rgba(255,255,255,.03);border:1px solid var(--bc);border-radius:8px;padding:14px;margin-top:14px;}
+.dt-card h4{color:var(--sc);font-size:.88rem;margin-bottom:10px;}
+.dt-card table{min-width:400px;}
+.dt-card thead th{font-size:.76rem;padding:8px 10px;}
+.dt-card tbody td{padding:7px 10px;font-size:.78rem;}
+.add-detail-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:flex-end;}
+.add-detail-row .fg2{margin-bottom:0;flex:1;min-width:120px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--pr);color:#0a1f12;padding:11px 18px;border-radius:8px;font-weight:600;font-size:.86rem;box-shadow:0 4px 16px rgba(0,0,0,.4);z-index:9999;transform:translateY(120px);opacity:0;transition:.3s;max-width:340px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.err{background:#dc2626;color:#fff;}
+
+/* SECTION TABS */
+.tabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--bc);padding-bottom:0;flex-wrap:wrap;}
+.tab-btn{padding:8px 16px;border:none;background:transparent;color:var(--tl);cursor:pointer;font-family:'Poppins',sans-serif;font-size:.85rem;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.2s;}
+.tab-btn.active{color:var(--sc);border-bottom-color:var(--sc);}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{width:68px;}.sidebar .at span,.sidebar .ni span,.sidebar .sui div{display:none;}
+  .sidebar .at{padding:16px 0;justify-content:center;}.sidebar .alogo{margin-right:0;}
+  .sidebar .ni{justify-content:center;padding:11px 0;}.sidebar .ni i{margin-right:0;}
+  .sidebar .sui{justify-content:center;padding:10px 2px;}
+  .mc,.sidebar.col~.mc{margin-left:68px;}
+  .stb{display:none;}.fr{grid-template-columns:1fr;}
+  .content{padding:12px 14px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="lc">
+    <div class="lc-logo">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%230f2a18'/%3E%3Cpath d='M20 40 Q20 22 40 22 Q60 22 60 40 Q60 58 40 58 Q20 58 20 40Z' fill='none' stroke='%231c3d26' stroke-width='2'/%3E%3Ctext x='40' y='48' text-anchor='middle' font-size='22' font-family='Montserrat,sans-serif' fill='%23d4af37' font-weight='700'%3EKS%3C/text%3E%3Ccircle cx='40' cy='18' r='4' fill='%2322c55e'/%3E%3Ccircle cx='62' cy='29' r='4' fill='%2322c55e'/%3E%3Ccircle cx='62' cy='51' r='4' fill='%2322c55e'/%3E%3Ccircle cx='40' cy='62' r='4' fill='%2322c55e'/%3E%3Ccircle cx='18' cy='51' r='4' fill='%2322c55e'/%3E%3Ccircle cx='18' cy='29' r='4' fill='%2322c55e'/%3E%3C/svg%3E" alt="Logo">
+    </div>
+    <div class="lc-title">KopSUS App</div>
+    <div class="lc-sub">Masuk untuk melanjutkan</div>
+    <div class="lc-note">⚠️ Demo Mode — data disimpan di memori browser</div>
+    <div class="lc-err" id="loginErr"><i class="fas fa-exclamation-circle"></i><span id="loginErrTxt"></span></div>
+    <div class="fg"><label>Username</label><input type="text" class="fc" id="lu" value="admin" autofocus></div>
+    <div class="fg"><label>Password</label><input type="password" class="fc" id="lp" value="admin123"></div>
+    <button class="lb" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+    <div class="lc-foot">admin/admin123 · manager/manager123 · staff/staff123</div>
+  </div>
+</div>
+
+<!-- APP PAGE -->
+<div id="appPage">
+  <div class="sidebar" id="sidebar">
+    <div class="at">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%230f2a18'/%3E%3Ctext x='40' y='48' text-anchor='middle' font-size='22' font-family='Montserrat,sans-serif' fill='%23d4af37' font-weight='700'%3EKS%3C/text%3E%3C/svg%3E" alt="Logo" class="alogo">
+      <span>KopSUS App</span>
+    </div>
+    <div class="sui">
+      <div>
+        <div class="sun" id="sbName">Administrator</div>
+        <div class="sur" id="sbRole">Admin</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="ni active" data-p="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></div>
+      <div class="ni" data-p="inventory"><i class="fas fa-boxes"></i><span>Inventory</span></div>
+      <div class="ni" data-p="suppliers"><i class="fas fa-truck-loading"></i><span>Suppliers</span></div>
+      <div class="ni" data-p="customers"><i class="fas fa-user-friends"></i><span>Customers</span></div>
+      <div class="ni" data-p="purchases"><i class="fas fa-file-invoice-dollar"></i><span>Purchases</span></div>
+      <div class="ni" data-p="sales"><i class="fas fa-chart-line"></i><span>Sales</span></div>
+      <div class="ni" data-p="receipts"><i class="fas fa-receipt"></i><span>Receipts</span></div>
+      <div class="ni" data-p="payments"><i class="fas fa-credit-card"></i><span>Payments</span></div>
+      <div class="ni" data-p="reports"><i class="fas fa-chart-pie"></i><span>Reports</span></div>
+      <div class="ni" data-p="settings" id="navSettings"><i class="fas fa-cogs"></i><span>Settings</span></div>
+      <div class="ni" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
+    </nav>
+  </div>
+
+  <div class="stb" id="stb" onclick="toggleSidebar()">
+    <i class="fas fa-chevron-left" id="stbIcon"></i>
+  </div>
+
+  <div class="mc" id="mc">
+    <div class="dev-banner">⚠️ DEMO MODE — Data tidak tersimpan ke server. Gunakan sebagai preview UI/UX.</div>
+    <div class="content" id="pageContent"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="mo" id="modal">
+  <div class="mb" id="modalBox">
+    <h2 id="modalTitle">Form</h2>
+    <div id="modalBody"></div>
+    <div class="ma">
+      <button class="btn btn-ol" onclick="closeModal()">Batal</button>
+      <button class="btn btn-pr" id="modalSaveBtn" onclick="saveModal()"><i class="fas fa-save"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+// ══════════════════════════════════════════════════
+//  DATABASE — struktur sesuai Google Sheets aktual
+// ══════════════════════════════════════════════════
+const ACCOUNTS = [
+  {username:'admin',   password:'admin123',   name:'Administrator', role:'Admin'},
+  {username:'manager', password:'manager123', name:'Manager',        role:'Manager'},
+  {username:'staff',   password:'staff123',   name:'Staff',          role:'Staff'},
+];
+
+// Dimensions (RANGEDIMENSIONS)
+const DIM = {
+  'Item Type':       ['Electronics','Food & Beverage','Clothing','Office Supply','Raw Material','Finished Goods'],
+  'Item Category':   ['Hardware','Software','Perishable','Non-Perishable','Apparel','Stationery'],
+  'Item Subcategory':['Laptop','Mobile','Dairy','Snack','Shirt','Pants','Paper','Toner'],
+  'State':           ['Jakarta','Jawa Barat','Jawa Tengah','Jawa Timur','Sumatera Utara','Bali'],
+  'City':            ['Jakarta Pusat','Jakarta Selatan','Bandung','Semarang','Surabaya','Medan','Denpasar'],
+  'PMT Mode':        ['Transfer Bank','Tunai','Cek','Giro'],
+  'PMT Status':      ['Paid','Partial','Unpaid','Overdue'],
+  'Shipping Status': ['Pending','In Transit','Delivered','Cancelled'],
+};
+
+// InventoryItems (RANGEINVENTORYITEMS)
+let INVENTORY = [
+  {id:'P11111',type:'Food & Beverage',category:'Non-Perishable',subcategory:'Snack',name:'Beras Premium 5kg',qtyPurchased:500,qtySold:380,remainingQty:120,reorderLevel:50,reorderRequired:false},
+  {id:'P22222',type:'Food & Beverage',category:'Non-Perishable',subcategory:'Snack',name:'Minyak Goreng 2L',qtyPurchased:300,qtySold:215,remainingQty:85,reorderLevel:30,reorderRequired:false},
+  {id:'P33333',type:'Food & Beverage',category:'Non-Perishable',subcategory:'Dairy',name:'Gula Pasir 1kg',qtyPurchased:600,qtySold:400,remainingQty:200,reorderLevel:100,reorderRequired:false},
+  {id:'P44444',type:'Food & Beverage',category:'Non-Perishable',subcategory:'Snack',name:'Tepung Terigu 1kg',qtyPurchased:400,qtySold:250,remainingQty:150,reorderLevel:60,reorderRequired:false},
+  {id:'P55555',type:'Food & Beverage',category:'Perishable',subcategory:'Dairy',name:'Susu UHT 1L',qtyPurchased:200,qtySold:140,remainingQty:60,reorderLevel:40,reorderRequired:false},
+  {id:'P66666',type:'Office Supply',category:'Stationery',subcategory:'Paper',name:'Kertas A4 Rim',qtyPurchased:150,qtySold:110,remainingQty:40,reorderLevel:20,reorderRequired:false},
+  {id:'P77777',type:'Electronics',category:'Hardware',subcategory:'Laptop',name:'Laptop Asus VivoBook',qtyPurchased:30,qtySold:28,remainingQty:2,reorderLevel:5,reorderRequired:true},
+  {id:'P88888',type:'Raw Material',category:'Non-Perishable',subcategory:'Paper',name:'Sabun Cuci 1kg',qtyPurchased:250,qtySold:175,remainingQty:75,reorderLevel:30,reorderRequired:false},
+];
+
+// Suppliers (RANGESUPPLIERS)
+let SUPPLIERS = [
+  {id:'P31415',name:'PT Sumber Makmur',contact:'Budi Santoso',email:'budi@sumbermakmur.co.id',state:'Jakarta',city:'Jakarta Pusat',address:'Jl. Pasar Besar No.12',totalPurchases:45200000,totalPayments:40000000,balance:5200000,createdBy:'admin'},
+  {id:'P27182',name:'CV Berkah Tani',contact:'Siti Rahayati',email:'siti@berkahtani.com',state:'Jawa Barat',city:'Bandung',address:'Jl. Agro No.7',totalPurchases:18500000,totalPayments:15400000,balance:3100000,createdBy:'admin'},
+  {id:'P16180',name:'UD Nusa Indah',contact:'Hendra Wijaya',email:'hendra@nusaindah.id',state:'Jawa Barat',city:'Bandung',address:'Jl. Melati No.3',totalPurchases:9200000,totalPayments:7350000,balance:1850000,createdBy:'manager'},
+  {id:'P14142',name:'PT Bersih Jaya',contact:'Dewi Lestari',email:'dewi@bersijaya.com',state:'Jakarta',city:'Jakarta Selatan',address:'Jl. Industri No.55',totalPurchases:5600000,totalPayments:4680000,balance:920000,createdBy:'manager'},
+];
+
+// Customers (RANGECUSTOMERS)
+let CUSTOMERS = [
+  {id:'C11111',name:'Mini Market Jaya',contact:'Siti Mulyani',email:'siti@mmjaya.id',state:'Jakarta',city:'Jakarta Selatan',address:'Jl. Sudirman No.88',totalSales:42000000,totalReceipts:33300000,balance:8700000,createdBy:'admin'},
+  {id:'C22222',name:'Koperasi Maju',contact:'Bambang S.',email:'bambang@kopmaju.org',state:'Jawa Barat',city:'Bandung',address:'Jl. Koperasi No.1',totalSales:82000000,totalReceipts:67000000,balance:15000000,createdBy:'admin'},
+  {id:'C33333',name:'Toko Pak Amin',contact:'Aminudin',email:'amin@tokopakamin.com',state:'Jakarta',city:'Jakarta Pusat',address:'Jl. Kenanga No.12',totalSales:18500000,totalReceipts:15100000,balance:3400000,createdBy:'manager'},
+  {id:'C44444',name:'Warung Bu Rina',contact:'Rina Indah',email:'rina@gmail.com',state:'Jawa Timur',city:'Surabaya',address:'Jl. Mawar No.5',totalSales:3200000,totalReceipts:2750000,balance:450000,createdBy:'staff'},
+  {id:'C55555',name:'Warung Bu Sari',contact:'Sari Dewi',email:'sari@gmail.com',state:'Jawa Barat',city:'Bandung',address:'Jl. Anggrek No.3',totalSales:1200000,totalReceipts:1200000,balance:0,createdBy:'staff'},
+];
+
+// Purchase Orders (RANGEPO)
+let PURCHASE_ORDERS = [
+  {date:'01/10/2025',id:'PO11111',supplierId:'P31415',supplierName:'PT Sumber Makmur',billNum:'BILL-001',state:'Jakarta',city:'Jakarta Pusat',totalAmount:12500000,totalPaid:12500000,poBalance:0,pmtStatus:'Paid',shippingStatus:'Delivered'},
+  {date:'01/22/2025',id:'PO22222',supplierId:'P27182',supplierName:'CV Berkah Tani',billNum:'BILL-002',state:'Jawa Barat',city:'Bandung',totalAmount:7800000,totalPaid:5000000,poBalance:2800000,pmtStatus:'Partial',shippingStatus:'Delivered'},
+  {date:'02/05/2025',id:'PO33333',supplierId:'P16180',supplierName:'UD Nusa Indah',billNum:'BILL-003',state:'Jawa Barat',city:'Bandung',totalAmount:4200000,totalPaid:4200000,poBalance:0,pmtStatus:'Paid',shippingStatus:'Delivered'},
+  {date:'02/18/2025',id:'PO44444',supplierId:'P14142',supplierName:'PT Bersih Jaya',billNum:'BILL-004',state:'Jakarta',city:'Jakarta Selatan',totalAmount:3100000,totalPaid:0,poBalance:3100000,pmtStatus:'Unpaid',shippingStatus:'Pending'},
+  {date:'03/02/2025',id:'PO55555',supplierId:'P31415',supplierName:'PT Sumber Makmur',billNum:'BILL-005',state:'Jakarta',city:'Jakarta Pusat',totalAmount:15200000,totalPaid:15200000,poBalance:0,pmtStatus:'Paid',shippingStatus:'Delivered'},
+  {date:'03/15/2025',id:'PO66666',supplierId:'P27182',supplierName:'CV Berkah Tani',billNum:'BILL-006',state:'Jawa Barat',city:'Bandung',totalAmount:6800000,totalPaid:3400000,poBalance:3400000,pmtStatus:'Partial',shippingStatus:'In Transit'},
+];
+
+// Purchase Details (RANGEPD)
+let PURCHASE_DETAILS = [
+  {date:'01/10/2025',poId:'PO11111',supplierId:'P31415',supplierName:'PT Sumber Makmur',billNum:'BILL-001',state:'Jakarta',city:'Jakarta Pusat',itemId:'P11111',itemName:'Beras Premium 5kg',itemType:'Food & Beverage',itemCategory:'Non-Perishable',itemSubcategory:'Snack',qtyPurchased:200,unitPrice:55000,totalPurchasePrice:11000000},
+  {date:'01/10/2025',poId:'PO11111',supplierId:'P31415',supplierName:'PT Sumber Makmur',billNum:'BILL-001',state:'Jakarta',city:'Jakarta Pusat',itemId:'P22222',itemName:'Minyak Goreng 2L',itemType:'Food & Beverage',itemCategory:'Non-Perishable',itemSubcategory:'Snack',qtyPurchased:50,unitPrice:30000,totalPurchasePrice:1500000},
+  {date:'01/22/2025',poId:'PO22222',supplierId:'P27182',supplierName:'CV Berkah Tani',billNum:'BILL-002',state:'Jawa Barat',city:'Bandung',itemId:'P33333',itemName:'Gula Pasir 1kg',itemType:'Food & Beverage',itemCategory:'Non-Perishable',itemSubcategory:'Dairy',qtyPurchased:300,unitPrice:12000,totalPurchasePrice:3600000},
+  {date:'01/22/2025',poId:'PO22222',supplierId:'P27182',supplierName:'CV Berkah Tani',billNum:'BILL-002',state:'Jawa Barat',city:'Bandung',itemId:'P44444',itemName:'Tepung Terigu 1kg',itemType:'Food & Beverage',itemCategory:'Non-Perishable',itemSubcategory:'Snack',qtyPurchased:200,unitPrice:10500,totalPurchasePrice:2100000},
+  {date:'03/02/2025',poId:'PO55555',supplierId:'P31415',supplierName:'PT Sumber Makmur',billNum:'BILL-005',state:'Jakarta',city:'Jakarta Pusat',itemId:'P77777',itemName:'Laptop Asus VivoBook',itemType:'Electronics',itemCategory:'Hardware',itemSubcategory:'Laptop',qtyPurchased:15,unitPrice:8500000,totalPurchasePrice:127500000},
+];
+
+// Sales Orders (RANGESO)
+let SALES_ORDERS = [
+  {soDate:'01/08/2025',soId:'SO11111',customerId:'C11111',customerName:'Mini Market Jaya',invoiceNum:'INV-001',state:'Jakarta',city:'Jakarta Selatan',totalSOAmount:18500000,totalReceived:18500000,soBalance:0,receiptStatus:'Received'},
+  {soDate:'01/15/2025',soId:'SO22222',customerId:'C44444',customerName:'Warung Bu Rina',invoiceNum:'INV-002',state:'Jawa Timur',city:'Surabaya',totalSOAmount:325000,totalReceived:200000,soBalance:125000,receiptStatus:'Partial Receipt'},
+  {soDate:'02/02/2025',soId:'SO33333',customerId:'C33333',customerName:'Toko Pak Amin',invoiceNum:'INV-003',state:'Jakarta',city:'Jakarta Pusat',totalSOAmount:780000,totalReceived:780000,soBalance:0,receiptStatus:'Received'},
+  {soDate:'02/20/2025',soId:'SO44444',customerId:'C22222',customerName:'Koperasi Maju',invoiceNum:'INV-004',state:'Jawa Barat',city:'Bandung',totalSOAmount:52000000,totalReceived:26000000,soBalance:26000000,receiptStatus:'Partial Receipt'},
+  {soDate:'03/10/2025',soId:'SO55555',customerId:'C11111',customerName:'Mini Market Jaya',invoiceNum:'INV-005',state:'Jakarta',city:'Jakarta Selatan',totalSOAmount:21000000,totalReceived:21000000,soBalance:0,receiptStatus:'Received'},
+  {soDate:'03/28/2025',soId:'SO66666',customerId:'C55555',customerName:'Warung Bu Sari',invoiceNum:'INV-006',state:'Jawa Barat',city:'Bandung',totalSOAmount:145000,totalReceived:145000,soBalance:0,receiptStatus:'Received'},
+  {soDate:'04/05/2025',soId:'SO77777',customerId:'C33333',customerName:'Toko Pak Amin',invoiceNum:'INV-007',state:'Jakarta',city:'Jakarta Pusat',totalSOAmount:910000,totalReceived:0,soBalance:910000,receiptStatus:'Pending'},
+  {soDate:'04/22/2025',soId:'SO88888',customerId:'C22222',customerName:'Koperasi Maju',invoiceNum:'INV-008',state:'Jawa Barat',city:'Bandung',totalSOAmount:78000000,totalReceived:78000000,soBalance:0,receiptStatus:'Received'},
+];
+
+// Sales Details (RANGESD)
+let SALES_DETAILS = [
+  {soDate:'01/08/2025',soId:'SO11111',detailId:'SD10001',customerId:'C11111',customerName:'Mini Market Jaya',state:'Jakarta',city:'Jakarta Selatan',invoiceNum:'INV-001',itemName:'Beras Premium 5kg',itemId:'P11111',itemType:'Food & Beverage',itemCategory:'Non-Perishable',itemSubcategory:'Snack',qtySold:100,unitPrice:65000,priceInclTax:71500,shippingFees:500000,totalSalesPrice:7650000},
+  {soDate:'01/08/2025',soId:'SO11111',detailId:'SD10002',customerId:'C11111',customerName:'Mini Market Jaya',state:'Jakarta',city:'Jakarta Selatan',invoiceNum:'INV-001',itemName:'Minyak Goreng 2L',itemId:'P22222',itemType:'Food & Beverage',itemCategory:'Non-Perishable',itemSubcategory:'Snack',qtySold:80,unitPrice:28000,priceInclTax:30800,shippingFees:0,totalSalesPrice:2464000},
+  {soDate:'03/10/2025',soId:'SO55555',detailId:'SD10003',customerId:'C11111',customerName:'Mini Market Jaya',state:'Jakarta',city:'Jakarta Selatan',invoiceNum:'INV-005',itemName:'Gula Pasir 1kg',itemId:'P33333',itemType:'Food & Beverage',itemCategory:'Non-Perishable',itemSubcategory:'Dairy',qtySold:200,unitPrice:14000,priceInclTax:15400,shippingFees:200000,totalSalesPrice:3280000},
+  {soDate:'04/22/2025',soId:'SO88888',detailId:'SD10004',customerId:'C22222',customerName:'Koperasi Maju',state:'Jawa Barat',city:'Bandung',invoiceNum:'INV-008',itemName:'Laptop Asus VivoBook',itemId:'P77777',itemType:'Electronics',itemCategory:'Hardware',itemSubcategory:'Laptop',qtySold:8,unitPrice:9500000,priceInclTax:10450000,shippingFees:500000,totalSalesPrice:76100000},
+  {soDate:'02/20/2025',soId:'SO44444',detailId:'SD10005',customerId:'C22222',customerName:'Koperasi Maju',state:'Jawa Barat',city:'Bandung',invoiceNum:'INV-004',itemName:'Kertas A4 Rim',itemId:'P66666',itemType:'Office Supply',itemCategory:'Stationery',itemSubcategory:'Paper',qtySold:50,unitPrice:65000,priceInclTax:71500,shippingFees:150000,totalSalesPrice:3725000},
+];
+
+// Receipts (RANGERECEIPTS)
+let RECEIPTS = [
+  {trxDate:'01/09/2025',trxId:'RT11111',customerId:'C11111',customerName:'Mini Market Jaya',state:'Jakarta',city:'Jakarta Selatan',soId:'SO11111',invoiceNum:'INV-001',pmtMode:'Transfer Bank',amountReceived:18500000},
+  {trxDate:'01/16/2025',trxId:'RT22222',customerId:'C44444',customerName:'Warung Bu Rina',state:'Jawa Timur',city:'Surabaya',soId:'SO22222',invoiceNum:'INV-002',pmtMode:'Tunai',amountReceived:200000},
+  {trxDate:'02/03/2025',trxId:'RT33333',customerId:'C33333',customerName:'Toko Pak Amin',state:'Jakarta',city:'Jakarta Pusat',soId:'SO33333',invoiceNum:'INV-003',pmtMode:'Transfer Bank',amountReceived:780000},
+  {trxDate:'02/21/2025',trxId:'RT44444',customerId:'C22222',customerName:'Koperasi Maju',state:'Jawa Barat',city:'Bandung',soId:'SO44444',invoiceNum:'INV-004',pmtMode:'Giro',amountReceived:26000000},
+  {trxDate:'03/11/2025',trxId:'RT55555',customerId:'C11111',customerName:'Mini Market Jaya',state:'Jakarta',city:'Jakarta Selatan',soId:'SO55555',invoiceNum:'INV-005',pmtMode:'Transfer Bank',amountReceived:21000000},
+  {trxDate:'03/29/2025',trxId:'RT66666',customerId:'C55555',customerName:'Warung Bu Sari',state:'Jawa Barat',city:'Bandung',soId:'SO66666',invoiceNum:'INV-006',pmtMode:'Tunai',amountReceived:145000},
+  {trxDate:'04/23/2025',trxId:'RT77777',customerId:'C22222',customerName:'Koperasi Maju',state:'Jawa Barat',city:'Bandung',soId:'SO88888',invoiceNum:'INV-008',pmtMode:'Transfer Bank',amountReceived:78000000},
+];
+
+// Payments (RANGEPAYMENTS)
+let PAYMENTS = [
+  {trxDate:'01/11/2025',trxId:'PT11111',supplierId:'P31415',supplierName:'PT Sumber Makmur',state:'Jakarta',city:'Jakarta Pusat',poId:'PO11111',billNum:'BILL-001',pmtMode:'Transfer Bank',amountPaid:12500000},
+  {trxDate:'01/23/2025',trxId:'PT22222',supplierId:'P27182',supplierName:'CV Berkah Tani',state:'Jawa Barat',city:'Bandung',poId:'PO22222',billNum:'BILL-002',pmtMode:'Transfer Bank',amountPaid:5000000},
+  {trxDate:'02/06/2025',trxId:'PT33333',supplierId:'P16180',supplierName:'UD Nusa Indah',state:'Jawa Barat',city:'Bandung',poId:'PO33333',billNum:'BILL-003',pmtMode:'Tunai',amountPaid:4200000},
+  {trxDate:'03/03/2025',trxId:'PT44444',supplierId:'P31415',supplierName:'PT Sumber Makmur',state:'Jakarta',city:'Jakarta Pusat',poId:'PO55555',billNum:'BILL-005',pmtMode:'Transfer Bank',amountPaid:15200000},
+  {trxDate:'03/16/2025',trxId:'PT55555',supplierId:'P27182',supplierName:'CV Berkah Tani',state:'Jawa Barat',city:'Bandung',poId:'PO66666',billNum:'BILL-006',pmtMode:'Transfer Bank',amountPaid:3400000},
+];
+
+// Users (Users sheet)
+let USERS = [
+  {id:'U001',name:'Administrator',email:'admin@kopsus.id',role:'Admin',status:'Active',dateAdded:'01/01/2025',username:'admin',linkedCustomerId:''},
+  {id:'U002',name:'Manager',email:'manager@kopsus.id',role:'Manager',status:'Active',dateAdded:'01/01/2025',username:'manager',linkedCustomerId:''},
+  {id:'U003',name:'Staff',email:'staff@kopsus.id',role:'Staff',status:'Active',dateAdded:'01/01/2025',username:'staff',linkedCustomerId:''},
+];
+
+// Company Profile & Display Preferences (Script Properties)
+let COMPANY = {companyName:'KopSUS',companyAddress:'Jl. Koperasi No.1, Jakarta',companyPhone:'021-12345678',companyEmail:'info@kopsus.id',companyLogoUrl:''};
+let PREFS = {currency:'IDR',dateFormat:'DD/MM/YYYY',theme:'dark-green-gold'};
+
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+let CU = null; // current user
+let CP = 'dashboard'; // current page
+let charts = [];
+let modalSaveCb = null;
+
+// ══════════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════════
+function doLogin(){
+  const u=document.getElementById('lu').value.trim().toLowerCase();
+  const p=document.getElementById('lp').value;
+  const acct=ACCOUNTS.find(a=>a.username===u&&a.password===p);
+  const err=document.getElementById('loginErr');
+  if(!acct){document.getElementById('loginErrTxt').textContent='Username atau password salah.';err.style.display='flex';return;}
+  err.style.display='none';
+  CU=acct;
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('appPage').style.display='block';
+  document.getElementById('sbName').textContent=acct.name;
+  document.getElementById('sbRole').textContent=acct.role;
+  if(acct.role==='Staff') document.getElementById('navSettings').style.display='none';
+  else document.getElementById('navSettings').style.display='';
+  goto('dashboard');
+}
+document.getElementById('lp').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('lu').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('logoutBtn').addEventListener('click',()=>{
+  CU=null;document.getElementById('appPage').style.display='none';
+  document.getElementById('loginPage').style.display='flex';
+});
+
+// ══════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════
+document.getElementById('nav').addEventListener('click',e=>{
+  const ni=e.target.closest('.ni[data-p]');
+  if(ni) goto(ni.dataset.p);
+});
+function goto(p){
+  CP=p;
+  document.querySelectorAll('.ni[data-p]').forEach(n=>n.classList.toggle('active',n.dataset.p===p));
+  destroyCharts();
+  const pages={dashboard:pgDashboard,inventory:pgInventory,suppliers:pgSuppliers,customers:pgCustomers,
+    purchases:pgPurchases,sales:pgSales,receipts:pgReceipts,payments:pgPayments,reports:pgReports,settings:pgSettings};
+  document.getElementById('pageContent').innerHTML='';
+  if(pages[p]) pages[p]();
+}
+function destroyCharts(){charts.forEach(c=>{try{c.destroy();}catch(e){}});charts=[];}
+
+// SIDEBAR TOGGLE
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar'),mc=document.getElementById('mc'),
+        ico=document.getElementById('stbIcon'),btn=document.getElementById('stb');
+  const col=sb.classList.toggle('col');
+  mc.style.marginLeft=col?'72px':'260px';
+  btn.style.left=col?'58px':'246px';
+  ico.style.transform=col?'rotate(180deg)':'';
+}
+
+// ══════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════
+function toast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(isErr?' err':'')+' show';
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ══════════════════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════════════════
+function openModal(title,body,cb){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalBody').innerHTML=body;
+  modalSaveCb=cb;
+  document.getElementById('modalSaveBtn').style.display=cb?'':'none';
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');modalSaveCb=null;}
+function saveModal(){if(modalSaveCb)modalSaveCb();}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+
+// ══════════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════════
+function fmtRp(n){return'Rp '+Math.round(Number(n)||0).toLocaleString('id-ID');}
+function fmtNum(n){return Math.round(Number(n)||0).toLocaleString('id-ID');}
+function today(){const d=new Date();return(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getDate().toString().padStart(2,'0')+'/'+d.getFullYear();}
+function toMDY(dateInput){
+  const d=new Date(dateInput);
+  return(d.getMonth()+1).toString().padStart(2,'0')+'/'+d.getDate().toString().padStart(2,'0')+'/'+d.getFullYear();
+}
+function genId(prefix,list,field='id'){
+  const existing=new Set(list.map(r=>r[field]));
+  let id;
+  do{id=prefix+Math.floor(10000+Math.random()*90000);}while(existing.has(id));
+  return id;
+}
+function dimSel(col,sel=''){
+  return DIM[col].map(v=>`<option value="${v}"${v===sel?' selected':''}>${v}</option>`).join('');
+}
+function badge(s){
+  const map={'Paid':'bg','Received':'bg','Active':'bg','Delivered':'bg',
+    'Partial':'by','Partial Receipt':'by','In Transit':'by',
+    'Unpaid':'br','Pending':'br','Overdue':'br','Cancelled':'br','Inactive':'br'};
+  return`<span class="badge ${map[s]||'bb'}">${s}</span>`;
+}
+function filterData(arr,q,fields){
+  if(!q)return arr;
+  const ql=q.toLowerCase();
+  return arr.filter(r=>fields.some(f=>(String(r[f]||'')).toLowerCase().includes(ql)));
+}
+function paginate(arr,page,perPage=15){
+  const total=Math.ceil(arr.length/perPage)||1;
+  if(page>total)page=total;
+  return{data:arr.slice((page-1)*perPage,page*perPage),total,page};
+}
+function renderPager(containerId,total,current,onPage){
+  const el=document.getElementById(containerId);if(!el)return;
+  if(total<=1){el.innerHTML='';return;}
+  let html='';
+  for(let i=1;i<=total;i++){
+    html+=`<button class="btn btn-ol btn-sm${i===current?' btn-pr':''}" data-page="${i}">${i}</button>`;
+  }
+  el.innerHTML=html;
+  el.querySelectorAll('button[data-page]').forEach(b=>{
+    b.addEventListener('click',()=>onPage(+b.dataset.page));
+  });
+}
+window.switchTab=function(btn,tabId){
+  const tabsWrap=btn.closest('.ph')?btn.parentElement:btn.parentElement;
+  btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  // hide all sibling panes that follow the tabs container
+  const allPanes=btn.closest('.content')?btn.closest('.content').querySelectorAll('.tab-pane'):document.querySelectorAll('.tab-pane');
+  allPanes.forEach(p=>p.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+};
+
+// ══════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════
+function pgDashboard(){
+  const totalSales=SALES_DETAILS.reduce((s,r)=>s+(r.totalSalesPrice||0),0);
+  const totalPurchases=PURCHASE_DETAILS.reduce((s,r)=>s+(r.totalPurchasePrice||0),0);
+  const totalReceivable=CUSTOMERS.reduce((s,r)=>s+(r.balance||0),0);
+  const totalPayable=SUPPLIERS.reduce((s,r)=>s+(r.balance||0),0);
+  const netProfit=totalSales-totalPurchases;
+  const topLocMap={};SALES_DETAILS.forEach(r=>{topLocMap[r.city]=(topLocMap[r.city]||0)+(r.totalSalesPrice||0);});
+  const topLoc=Object.entries(topLocMap).sort((a,b)=>b[1]-a[1])[0]?.[0]||'–';
+  const topItemMap={};SALES_DETAILS.forEach(r=>{topItemMap[r.itemType]=(topItemMap[r.itemType]||0)+(r.totalSalesPrice||0);});
+  const topItem=Object.entries(topItemMap).sort((a,b)=>b[1]-a[1])[0]?.[0]||'–';
+
+  const trendMap={};
+  SALES_DETAILS.forEach(r=>{
+    const m=r.soDate?r.soDate.substring(0,2)+'/2025':'01/2025';
+    trendMap[m]=(trendMap[m]||0)+(r.totalSalesPrice||0);
+  });
+  const trendDates=Object.keys(trendMap).sort();
+  const trendVals=trendDates.map(d=>trendMap[d]);
+
+  const stateMap={};SALES_DETAILS.forEach(r=>{stateMap[r.state]=(stateMap[r.state]||0)+(r.totalSalesPrice||0);});
+  const catMap={};SALES_DETAILS.forEach(r=>{catMap[r.itemType]=(catMap[r.itemType]||0)+(r.totalSalesPrice||0);});
+  const catTotal=Object.values(catMap).reduce((a,b)=>a+b,0)||1;
+  const custMap={};SALES_DETAILS.forEach(r=>{custMap[r.customerName]=(custMap[r.customerName]||0)+(r.totalSalesPrice||0);});
+  const top10=Object.entries(custMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const purStateMap={};PURCHASE_DETAILS.forEach(r=>{purStateMap[r.state]=(purStateMap[r.state]||0)+(r.totalPurchasePrice||0);});
+  const purCatYear={};
+  PURCHASE_DETAILS.forEach(r=>{
+    const y=2025,c=r.itemType||'Unknown';
+    purCatYear[y]=purCatYear[y]||{};
+    purCatYear[y][c]=(purCatYear[y][c]||0)+(r.totalPurchasePrice||0);
+  });
+  const items=[...new Set(PURCHASE_DETAILS.map(r=>r.itemType))];
+  const purSeries=items.map(it=>({name:it,data:[purCatYear[2025]?.[it]||0]}));
+  const cityMap={};SALES_DETAILS.forEach(r=>{cityMap[r.city]=(cityMap[r.city]||0)+(r.totalSalesPrice||0);});
+  const treemap=Object.entries(cityMap).sort((a,b)=>b[1]-a[1]).map(([x,y])=>({x,y}));
+
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Dashboard</h1><p>Key trends and business insights</p></div>
+<div class="kpi-grid">
+  <div class="kpi"><h3><i class="fas fa-chart-line"></i>Total Sales</h3><h2>${fmtRp(totalSales)}</h2></div>
+  <div class="kpi"><h3><i class="fas fa-shopping-cart"></i>Total Purchases</h3><h2>${fmtRp(totalPurchases)}</h2></div>
+  <div class="kpi"><h3><i class="fas fa-dollar-sign"></i>Net Profit</h3><h2 style="color:${netProfit>=0?'#22c55e':'#f87171'}">${fmtRp(netProfit)}</h2></div>
+  <div class="kpi"><h3><i class="fas fa-receipt"></i>Total Receivable</h3><h2>${fmtRp(totalReceivable)}</h2></div>
+  <div class="kpi"><h3><i class="fas fa-file-invoice-dollar"></i>Total Payable</h3><h2>${fmtRp(totalPayable)}</h2></div>
+  <div class="kpi"><h3><i class="fas fa-map-marker-alt"></i>Top Sales Location</h3><h2 style="font-size:.9rem">${topLoc}</h2></div>
+  <div class="kpi"><h3><i class="fas fa-box-open"></i>Top Selling Item</h3><h2 style="font-size:.85rem">${topItem}</h2></div>
+</div>
+<div class="cr">
+  <div class="cc" style="flex:2.5"><h3>Sales Trend</h3><div id="dC1" style="height:280px"></div></div>
+  <div class="cc" style="flex:1"><h3>Sales By Location</h3><div id="dC2" style="height:280px"></div></div>
+  <div class="cc" style="flex:1"><h3>Sales By Category</h3><div id="dC3" style="height:280px"></div></div>
+</div>
+<div class="cr">
+  <div class="cc" style="flex:1"><h3>Top 10 Customers</h3><div id="dC4" style="height:300px"></div></div>
+  <div class="cc" style="flex:1"><h3>Purchase By Location</h3><div id="dC5" style="height:300px"></div></div>
+  <div class="cc" style="flex:1"><h3>Purchase By Category</h3><div id="dC6" style="height:300px"></div></div>
+</div>
+<div class="cr">
+  <div class="cc" style="flex:1"><h3>Sales By City</h3><div id="dC7" style="height:280px"></div></div>
+</div>`;
+
+  const COLORS=['#22c55e','#d4af37','#60a5fa','#f87171','#a78bfa','#34d399','#fb923c','#e879f9'];
+  const mkChart=(id,opts)=>{const c=new ApexCharts(document.querySelector(id),opts);c.render();charts.push(c);};
+  const axOpts={style:{colors:'#cfe8d6',fontSize:'11px'}};
+
+  mkChart('#dC1',{chart:{type:'area',height:280,toolbar:{show:false}},
+    series:[{name:'Sales',data:trendVals}],dataLabels:{enabled:false},
+    stroke:{curve:'smooth',width:2,colors:['#22c55e']},
+    fill:{type:'gradient',gradient:{shade:'dark',type:'vertical',opacityFrom:.7,opacityTo:.1,colorStops:[{offset:0,color:'#22c55e',opacity:.8},{offset:100,color:'#0a1f12',opacity:.1}]}},
+    xaxis:{categories:trendDates,labels:axOpts},
+    yaxis:{labels:{formatter:v=>'Rp '+(v/1000000).toFixed(1)+'M',...axOpts}},
+    colors:['#22c55e'],tooltip:{theme:'dark'},grid:{borderColor:'#1c3d26',strokeDashArray:4},markers:{size:3,colors:['#22c55e'],strokeColors:['#d4af37'],strokeWidth:2}});
+
+  mkChart('#dC2',{chart:{type:'bar',height:280,toolbar:{show:false}},
+    series:[{data:Object.values(stateMap)}],dataLabels:{enabled:false},
+    plotOptions:{bar:{borderRadius:4,columnWidth:'70%'}},
+    xaxis:{categories:Object.keys(stateMap),labels:axOpts},
+    yaxis:{labels:{formatter:v=>'Rp '+(v/1000000).toFixed(1)+'M',...axOpts}},
+    colors:['#22c55e'],fill:{type:'gradient',gradient:{shade:'dark',type:'vertical',opacityFrom:.9,opacityTo:.5}},
+    tooltip:{theme:'dark'},grid:{borderColor:'#1c3d26',strokeDashArray:4}});
+
+  mkChart('#dC3',{chart:{type:'pie',height:280},
+    series:Object.values(catMap).map(v=>Math.round(v/catTotal*100)),
+    labels:Object.keys(catMap),colors:COLORS,
+    legend:{position:'bottom',labels:{colors:'#cfe8d6',fontSize:'11px'}},
+    tooltip:{theme:'dark',y:{formatter:v=>v+'%'}},stroke:{colors:['#081a0e']},dataLabels:{style:{fontSize:'11px'}}});
+
+  mkChart('#dC4',{chart:{type:'bar',height:300,toolbar:{show:false}},
+    series:[{data:top10.map(a=>a[1])}],
+    plotOptions:{bar:{horizontal:true,borderRadius:4}},
+    dataLabels:{enabled:true,formatter:v=>'Rp '+(v/1000000).toFixed(1)+'M',style:{colors:['#0a1f12'],fontSize:'10px'}},
+    xaxis:{categories:top10.map(a=>a[0]),labels:{formatter:v=>'Rp '+(v/1000000).toFixed(1)+'M',...axOpts}},
+    yaxis:{labels:axOpts},
+    colors:['#22c55e'],fill:{type:'gradient',gradient:{shade:'dark',type:'horizontal',gradientToColors:['#d4af37'],opacityFrom:.95,opacityTo:.85}},
+    tooltip:{theme:'dark'},grid:{borderColor:'#1c3d26',strokeDashArray:4}});
+
+  mkChart('#dC5',{chart:{type:'donut',height:300},
+    series:Object.values(purStateMap),labels:Object.keys(purStateMap),colors:COLORS,
+    plotOptions:{pie:{donut:{size:'55%'}}},
+    legend:{position:'bottom',labels:{colors:'#cfe8d6',fontSize:'11px'}},
+    tooltip:{theme:'dark'},stroke:{colors:['#081a0e']}});
+
+  mkChart('#dC6',{chart:{type:'bar',height:300,stacked:true,toolbar:{show:false}},
+    series:purSeries,
+    xaxis:{categories:[2025],labels:axOpts},
+    yaxis:{labels:{formatter:v=>'Rp '+(v/1000000).toFixed(1)+'M',...axOpts}},
+    colors:COLORS,legend:{position:'bottom',labels:{colors:'#cfe8d6',fontSize:'11px'}},
+    tooltip:{theme:'dark'},grid:{borderColor:'#1c3d26',strokeDashArray:4},dataLabels:{enabled:false}});
+
+  mkChart('#dC7',{chart:{type:'treemap',height:280},
+    series:[{data:treemap}],
+    colors:['#22c55e'],
+    plotOptions:{treemap:{shadeIntensity:.6,colorScale:{ranges:[{from:0,to:1e12,color:'#0a1f12'}]},distributed:false}},
+    dataLabels:{style:{colors:['#e8f5e9'],fontSize:'11px'}},
+    tooltip:{theme:'dark'}});
+}
+
+// ══════════════════════════════════════════════════
+//  INVENTORY
+// ══════════════════════════════════════════════════
+let invQ='',invPage=1;
+function pgInventory(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Inventory</h1><p>Kelola stok barang (RANGEINVENTORYITEMS)</p></div>
+<div class="tc">
+  <div class="ta">
+    <div class="btn-grp">
+      <button class="btn btn-pr" id="btnAddInv"><i class="fas fa-plus"></i> Tambah Item</button>
+    </div>
+    <input class="si" placeholder="Cari Item ID / nama / tipe..." id="invSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Item ID</th><th>Item Type</th><th>Item Category</th><th>Item Subcategory</th><th>Item Name</th>
+    <th>QTY Purchased</th><th>QTY Sold</th><th>Remaining QTY</th><th>Reorder Level</th><th>Reorder Required</th><th>Aksi</th></tr></thead>
+    <tbody id="invTb"></tbody>
+  </table></div>
+  <div id="invPg" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>`;
+  document.getElementById('btnAddInv').addEventListener('click',openAddInv);
+  document.getElementById('invSi').addEventListener('input',function(){invQ=this.value;invPage=1;renderInv();});
+  renderInv();
+}
+function renderInv(){
+  const fil=filterData(INVENTORY,invQ,['id','name','type','category']);
+  const {data,total,page}=paginate(fil,invPage);
+  invPage=page;
+  document.getElementById('invTb').innerHTML=data.map(r=>`<tr>
+    <td>${r.id}</td><td>${r.type}</td><td>${r.category}</td><td>${r.subcategory}</td><td>${r.name}</td>
+    <td>${fmtNum(r.qtyPurchased)}</td><td>${fmtNum(r.qtySold)}</td>
+    <td><span class="badge ${r.remainingQty<=r.reorderLevel?'br':'bg'}">${fmtNum(r.remainingQty)}</span></td>
+    <td>${fmtNum(r.reorderLevel)}</td>
+    <td>${r.reorderRequired?'<span class="badge br">Yes</span>':'<span class="badge bg">No</span>'}</td>
+    <td><button class="btn btn-ol btn-sm" data-edit="${r.id}"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-dn btn-sm" data-del="${r.id}"><i class="fas fa-trash"></i></button></td>
+  </tr>`).join('')||'<tr><td colspan="11" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+  document.querySelectorAll('#invTb [data-edit]').forEach(b=>b.addEventListener('click',()=>openEditInv(b.dataset.edit)));
+  document.querySelectorAll('#invTb [data-del]').forEach(b=>b.addEventListener('click',()=>delInv(b.dataset.del)));
+  renderPager('invPg',total,invPage,p=>{invPage=p;renderInv();});
+}
+function invForm(d={}){return`
+<div class="fr">
+  <div class="fg2"><label>Item Name *</label><input id="fName" value="${d.name||''}" placeholder="Nama barang"></div>
+  <div class="fg2"><label>Item Type</label><select id="fType">${dimSel('Item Type',d.type)}</select></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Item Category</label><select id="fCat">${dimSel('Item Category',d.category)}</select></div>
+  <div class="fg2"><label>Item Subcategory</label><select id="fSub">${dimSel('Item Subcategory',d.subcategory)}</select></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Reorder Level</label><input id="fRL" type="number" value="${d.reorderLevel||0}"></div>
+  <div class="fg2" style="display:flex;align-items:center;gap:8px;padding-top:22px">
+    <input type="checkbox" id="fRR" ${d.reorderRequired?'checked':''}><label for="fRR">Reorder Required</label>
+  </div>
+</div>`;}
+function openAddInv(){
+  openModal('Tambah Item Inventory',invForm(),()=>{
+    const name=document.getElementById('fName').value.trim();
+    if(!name){toast('Nama item wajib diisi!',true);return;}
+    INVENTORY.push({id:genId('P',INVENTORY,'id'),type:document.getElementById('fType').value,
+      category:document.getElementById('fCat').value,subcategory:document.getElementById('fSub').value,
+      name,qtyPurchased:0,qtySold:0,remainingQty:0,
+      reorderLevel:+document.getElementById('fRL').value||0,
+      reorderRequired:document.getElementById('fRR').checked});
+    closeModal();toast('Item berhasil ditambahkan!');renderInv();
+  });
+}
+function openEditInv(id){
+  const r=INVENTORY.find(x=>x.id===id);if(!r)return;
+  openModal('Edit Item Inventory',invForm(r),()=>{
+    r.name=document.getElementById('fName').value.trim();
+    r.type=document.getElementById('fType').value;
+    r.category=document.getElementById('fCat').value;
+    r.subcategory=document.getElementById('fSub').value;
+    r.reorderLevel=+document.getElementById('fRL').value||0;
+    r.reorderRequired=document.getElementById('fRR').checked;
+    closeModal();toast('Item berhasil diupdate!');renderInv();
+  });
+}
+function delInv(id){
+  const r=INVENTORY.find(x=>x.id===id);
+  if(r&&r.remainingQty>0){toast('Tidak bisa hapus — masih ada stok (Remaining QTY > 0)',true);return;}
+  if(!confirm('Hapus item ini?'))return;
+  INVENTORY=INVENTORY.filter(x=>x.id!==id);toast('Item dihapus!');renderInv();
+}
+
+// ══════════════════════════════════════════════════
+//  SUPPLIERS
+// ══════════════════════════════════════════════════
+let supQ='',supPage=1;
+function pgSuppliers(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Suppliers</h1><p>Kelola data pemasok (RANGESUPPLIERS)</p></div>
+<div class="tc">
+  <div class="ta">
+    <div class="btn-grp"><button class="btn btn-pr" id="btnAddSup"><i class="fas fa-plus"></i> Tambah Supplier</button></div>
+    <input class="si" placeholder="Cari ID / nama / kota..." id="supSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Supplier ID</th><th>Supplier Name</th><th>Supplier Contact</th><th>Supplier Email</th>
+    <th>State</th><th>City</th><th>Total Purchases</th><th>Total Payments</th><th>Balance Payable</th><th>Aksi</th></tr></thead>
+    <tbody id="supTb"></tbody>
+  </table></div>
+  <div id="supPg" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>`;
+  document.getElementById('btnAddSup').addEventListener('click',openAddSup);
+  document.getElementById('supSi').addEventListener('input',function(){supQ=this.value;supPage=1;renderSup();});
+  renderSup();
+}
+function renderSup(){
+  const fil=filterData(SUPPLIERS,supQ,['id','name','contact','city','state']);
+  const {data,total,page}=paginate(fil,supPage);
+  supPage=page;
+  document.getElementById('supTb').innerHTML=data.map(r=>`<tr>
+    <td>${r.id}</td><td><strong>${r.name}</strong></td><td>${r.contact}</td><td>${r.email}</td>
+    <td>${r.state}</td><td>${r.city}</td>
+    <td>${fmtRp(r.totalPurchases)}</td><td>${fmtRp(r.totalPayments)}</td>
+    <td><span class="badge ${r.balance>0?'br':'bg'}">${fmtRp(r.balance)}</span></td>
+    <td><button class="btn btn-ol btn-sm" data-edit="${r.id}"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-dn btn-sm" data-del="${r.id}"><i class="fas fa-trash"></i></button></td>
+  </tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+  document.querySelectorAll('#supTb [data-edit]').forEach(b=>b.addEventListener('click',()=>openEditSup(b.dataset.edit)));
+  document.querySelectorAll('#supTb [data-del]').forEach(b=>b.addEventListener('click',()=>delSup(b.dataset.del)));
+  renderPager('supPg',total,supPage,p=>{supPage=p;renderSup();});
+}
+function supForm(d={}){return`
+<div class="fr">
+  <div class="fg2"><label>Supplier Name *</label><input id="fName" value="${d.name||''}"></div>
+  <div class="fg2"><label>Supplier Contact</label><input id="fContact" value="${d.contact||''}"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Supplier Email</label><input id="fEmail" type="email" value="${d.email||''}"></div>
+  <div class="fg2"><label>Supplier Address</label><input id="fAddress" value="${d.address||''}"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>State</label><select id="fState">${dimSel('State',d.state)}</select></div>
+  <div class="fg2"><label>City</label><select id="fCity">${dimSel('City',d.city)}</select></div>
+</div>`;}
+function openAddSup(){
+  openModal('Tambah Supplier',supForm(),()=>{
+    const name=document.getElementById('fName').value.trim();
+    if(!name){toast('Nama supplier wajib diisi!',true);return;}
+    SUPPLIERS.push({id:genId('P',SUPPLIERS,'id'),name,
+      contact:document.getElementById('fContact').value,
+      email:document.getElementById('fEmail').value,
+      address:document.getElementById('fAddress').value,
+      state:document.getElementById('fState').value,
+      city:document.getElementById('fCity').value,
+      totalPurchases:0,totalPayments:0,balance:0,createdBy:CU.username});
+    closeModal();toast('Supplier ditambahkan!');renderSup();
+  });
+}
+function openEditSup(id){
+  const r=SUPPLIERS.find(x=>x.id===id);if(!r)return;
+  if(CU.role==='Staff'&&r.createdBy!==CU.username){toast('Anda tidak memiliki izin untuk mengubah data ini.',true);return;}
+  openModal('Edit Supplier',supForm(r),()=>{
+    r.name=document.getElementById('fName').value.trim();
+    r.contact=document.getElementById('fContact').value;
+    r.email=document.getElementById('fEmail').value;
+    r.address=document.getElementById('fAddress').value;
+    r.state=document.getElementById('fState').value;
+    r.city=document.getElementById('fCity').value;
+    closeModal();toast('Supplier diupdate!');renderSup();
+  });
+}
+function delSup(id){
+  const r=SUPPLIERS.find(x=>x.id===id);
+  if(!r)return;
+  if(CU.role==='Staff'&&r.createdBy!==CU.username){toast('Akses ditolak.',true);return;}
+  if(r.balance>0){toast('Tidak bisa hapus — masih ada Balance Payable',true);return;}
+  if(!confirm('Hapus supplier ini?'))return;
+  SUPPLIERS=SUPPLIERS.filter(x=>x.id!==id);toast('Supplier dihapus!');renderSup();
+}
+
+// ══════════════════════════════════════════════════
+//  CUSTOMERS
+// ══════════════════════════════════════════════════
+let cusQ='',cusPage=1;
+function pgCustomers(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Customers</h1><p>Kelola data pelanggan (RANGECUSTOMERS)</p></div>
+<div class="tc">
+  <div class="ta">
+    <div class="btn-grp"><button class="btn btn-pr" id="btnAddCus"><i class="fas fa-plus"></i> Tambah Customer</button></div>
+    <input class="si" placeholder="Cari ID / nama / kota..." id="cusSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Customer ID</th><th>Customer Name</th><th>Customer Contact</th><th>Customer Email</th>
+    <th>State</th><th>City</th><th>Total Sales</th><th>Total Receipts</th><th>Balance Receivable</th><th>Aksi</th></tr></thead>
+    <tbody id="cusTb"></tbody>
+  </table></div>
+  <div id="cusPg" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>`;
+  document.getElementById('btnAddCus').addEventListener('click',openAddCus);
+  document.getElementById('cusSi').addEventListener('input',function(){cusQ=this.value;cusPage=1;renderCus();});
+  renderCus();
+}
+function renderCus(){
+  const fil=filterData(CUSTOMERS,cusQ,['id','name','contact','city','state']);
+  const {data,total,page}=paginate(fil,cusPage);
+  cusPage=page;
+  document.getElementById('cusTb').innerHTML=data.map(r=>`<tr>
+    <td>${r.id}</td><td><strong>${r.name}</strong></td><td>${r.contact}</td><td>${r.email}</td>
+    <td>${r.state}</td><td>${r.city}</td>
+    <td>${fmtRp(r.totalSales)}</td><td>${fmtRp(r.totalReceipts)}</td>
+    <td><span class="badge ${r.balance>0?'br':'bg'}">${fmtRp(r.balance)}</span></td>
+    <td><button class="btn btn-ol btn-sm" data-edit="${r.id}"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-dn btn-sm" data-del="${r.id}"><i class="fas fa-trash"></i></button></td>
+  </tr>`).join('')||'<tr><td colspan="10" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+  document.querySelectorAll('#cusTb [data-edit]').forEach(b=>b.addEventListener('click',()=>openEditCus(b.dataset.edit)));
+  document.querySelectorAll('#cusTb [data-del]').forEach(b=>b.addEventListener('click',()=>delCus(b.dataset.del)));
+  renderPager('cusPg',total,cusPage,p=>{cusPage=p;renderCus();});
+}
+function cusForm(d={}){return`
+<div class="fr">
+  <div class="fg2"><label>Customer Name *</label><input id="fName" value="${d.name||''}"></div>
+  <div class="fg2"><label>Customer Contact</label><input id="fContact" value="${d.contact||''}"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Customer Email</label><input id="fEmail" type="email" value="${d.email||''}"></div>
+  <div class="fg2"><label>Customer Address</label><input id="fAddress" value="${d.address||''}"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>State</label><select id="fState">${dimSel('State',d.state)}</select></div>
+  <div class="fg2"><label>City</label><select id="fCity">${dimSel('City',d.city)}</select></div>
+</div>`;}
+function openAddCus(){
+  openModal('Tambah Customer',cusForm(),()=>{
+    const name=document.getElementById('fName').value.trim();
+    if(!name){toast('Nama customer wajib diisi!',true);return;}
+    CUSTOMERS.push({id:genId('C',CUSTOMERS,'id'),name,
+      contact:document.getElementById('fContact').value,
+      email:document.getElementById('fEmail').value,
+      address:document.getElementById('fAddress').value,
+      state:document.getElementById('fState').value,
+      city:document.getElementById('fCity').value,
+      totalSales:0,totalReceipts:0,balance:0,createdBy:CU.username});
+    closeModal();toast('Customer ditambahkan!');renderCus();
+  });
+}
+function openEditCus(id){
+  const r=CUSTOMERS.find(x=>x.id===id);if(!r)return;
+  if(CU.role==='Staff'&&r.createdBy!==CU.username){toast('Akses ditolak.',true);return;}
+  openModal('Edit Customer',cusForm(r),()=>{
+    r.name=document.getElementById('fName').value.trim();
+    r.contact=document.getElementById('fContact').value;
+    r.email=document.getElementById('fEmail').value;
+    r.address=document.getElementById('fAddress').value;
+    r.state=document.getElementById('fState').value;
+    r.city=document.getElementById('fCity').value;
+    closeModal();toast('Customer diupdate!');renderCus();
+  });
+}
+function delCus(id){
+  const r=CUSTOMERS.find(x=>x.id===id);
+  if(!r)return;
+  if(CU.role==='Staff'&&r.createdBy!==CU.username){toast('Akses ditolak.',true);return;}
+  if(r.balance>0){toast('Tidak bisa hapus — masih ada Balance Receivable',true);return;}
+  if(!confirm('Hapus customer ini?'))return;
+  CUSTOMERS=CUSTOMERS.filter(x=>x.id!==id);toast('Customer dihapus!');renderCus();
+}
+
+// ══════════════════════════════════════════════════
+//  PURCHASES
+// ══════════════════════════════════════════════════
+let poQ='',poPage=1;
+function pgPurchases(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Purchases</h1><p>Kelola Purchase Orders (RANGEPO + RANGEPD)</p></div>
+<div class="tc">
+  <div class="ta">
+    <div class="btn-grp"><button class="btn btn-pr" id="btnAddPO"><i class="fas fa-plus"></i> Buat PO Baru</button></div>
+    <input class="si" placeholder="Cari PO ID / supplier / bill..." id="poSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Date</th><th>PO ID</th><th>Supplier ID</th><th>Supplier Name</th><th>Bill Num</th>
+    <th>State</th><th>City</th><th>Total Amount</th><th>Total Paid</th><th>PO Balance</th>
+    <th>PMT Status</th><th>Shipping Status</th><th>Aksi</th></tr></thead>
+    <tbody id="poTb"></tbody>
+  </table></div>
+  <div id="poPg" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>
+<div class="tc">
+  <div class="ta">
+    <h3 style="margin:0">Purchase Details (RANGEPD)</h3>
+    <input class="si" placeholder="Cari PO ID / item / supplier..." id="pdSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Date</th><th>PO ID</th><th>Supplier Name</th><th>Bill Num</th><th>State</th><th>City</th>
+    <th>Item Name</th><th>Item Type</th><th>Item Category</th>
+    <th>QTY Purchased</th><th>Unit Price</th><th>Total Purchase Price</th></tr></thead>
+    <tbody id="pdTb"></tbody>
+  </table></div>
+</div>`;
+  document.getElementById('btnAddPO').addEventListener('click',openAddPO);
+  document.getElementById('poSi').addEventListener('input',function(){poQ=this.value;poPage=1;renderPO();});
+  document.getElementById('pdSi').addEventListener('input',function(){renderPD(this.value);});
+  renderPO();renderPD('');
+}
+function renderPO(){
+  const fil=filterData(PURCHASE_ORDERS,poQ,['id','supplierName','billNum','state','city','pmtStatus']);
+  const {data,total,page}=paginate(fil,poPage);
+  poPage=page;
+  document.getElementById('poTb').innerHTML=data.map(r=>`<tr>
+    <td>${r.date}</td><td>${r.id}</td><td>${r.supplierId}</td><td>${r.supplierName}</td><td>${r.billNum}</td>
+    <td>${r.state}</td><td>${r.city}</td>
+    <td>${fmtRp(r.totalAmount)}</td><td>${fmtRp(r.totalPaid)}</td>
+    <td><span class="badge ${r.poBalance>0?'br':'bg'}">${fmtRp(r.poBalance)}</span></td>
+    <td>${badge(r.pmtStatus)}</td><td>${badge(r.shippingStatus)}</td>
+    <td><button class="btn btn-ol btn-sm" data-edit="${r.id}"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-dn btn-sm" data-del="${r.id}"><i class="fas fa-trash"></i></button></td>
+  </tr>`).join('')||'<tr><td colspan="13" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+  document.querySelectorAll('#poTb [data-edit]').forEach(b=>b.addEventListener('click',()=>openEditPO(b.dataset.edit)));
+  document.querySelectorAll('#poTb [data-del]').forEach(b=>b.addEventListener('click',()=>delPO(b.dataset.del)));
+  renderPager('poPg',total,poPage,p=>{poPage=p;renderPO();});
+}
+function renderPD(q){
+  const fil=filterData(PURCHASE_DETAILS,q,['poId','supplierName','itemName','itemType','billNum']);
+  document.getElementById('pdTb').innerHTML=fil.map(r=>`<tr>
+    <td>${r.date}</td><td>${r.poId}</td><td>${r.supplierName}</td><td>${r.billNum}</td>
+    <td>${r.state}</td><td>${r.city}</td>
+    <td>${r.itemName}</td><td>${r.itemType}</td><td>${r.itemCategory}</td>
+    <td>${fmtNum(r.qtyPurchased)}</td><td>${fmtRp(r.unitPrice)}</td><td>${fmtRp(r.totalPurchasePrice)}</td>
+  </tr>`).join('')||'<tr><td colspan="12" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+}
+function poForm(d={}){
+  const supOpts=SUPPLIERS.map(s=>`<option value="${s.id}" data-name="${s.name}" data-state="${s.state}" data-city="${s.city}"${s.id===d.supplierId?' selected':''}>${s.name}</option>`).join('');
+  return`
+<div class="fr">
+  <div class="fg2"><label>Date</label><input id="fDate" type="date" value="${d.date?new Date(d.date).toISOString().slice(0,10):new Date().toISOString().slice(0,10)}"></div>
+  <div class="fg2"><label>Bill Num</label><input id="fBill" value="${d.billNum||''}"></div>
+</div>
+<div class="fg2"><label>Supplier *</label>
+  <select id="fSup">${supOpts}</select>
+</div>
+<div class="fr">
+  <div class="fg2"><label>State</label><input id="fState" value="${d.state||''}" readonly style="opacity:.7"></div>
+  <div class="fg2"><label>City</label><input id="fCity" value="${d.city||''}" readonly style="opacity:.7"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Total Amount (Rp)</label><input id="fTotal" type="number" value="${d.totalAmount||0}"></div>
+  <div class="fg2"><label>Total Paid (Rp)</label><input id="fPaid" type="number" value="${d.totalPaid||0}"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>PMT Status</label><select id="fPmtS">${dimSel('PMT Status',d.pmtStatus||'Unpaid')}</select></div>
+  <div class="fg2"><label>Shipping Status</label><select id="fShipS">${dimSel('Shipping Status',d.shippingStatus||'Pending')}</select></div>
+</div>
+<div class="fg2"><label>PO Balance (auto)</label><input id="fBal" readonly value="${fmtRp((d.totalAmount||0)-(d.totalPaid||0))}" style="opacity:.7"></div>`;
+}
+function wirePOFormEvents(d={}){
+  const sel=document.getElementById('fSup');
+  const fillLoc=()=>{
+    const opt=sel.options[sel.selectedIndex];
+    document.getElementById('fState').value=opt.dataset.state||'';
+    document.getElementById('fCity').value=opt.dataset.city||'';
+  };
+  sel.addEventListener('change',fillLoc);
+  fillLoc();
+  const recalc=()=>{
+    const t=+document.getElementById('fTotal').value||0;
+    const p=+document.getElementById('fPaid').value||0;
+    document.getElementById('fBal').value=fmtRp(t-p);
+  };
+  document.getElementById('fTotal').addEventListener('input',recalc);
+  document.getElementById('fPaid').addEventListener('input',recalc);
+}
+function openAddPO(){
+  openModal('Buat Purchase Order',poForm(),()=>{
+    const bill=document.getElementById('fBill').value.trim();
+    if(!bill){toast('Bill Num wajib diisi!',true);return;}
+    const sel=document.getElementById('fSup');
+    const opt=sel.options[sel.selectedIndex];
+    const total=+document.getElementById('fTotal').value||0;
+    const paid=+document.getElementById('fPaid').value||0;
+    const dateStr=toMDY(document.getElementById('fDate').value);
+    PURCHASE_ORDERS.push({date:dateStr,id:genId('PO',PURCHASE_ORDERS,'id'),
+      supplierId:sel.value,supplierName:opt.text,billNum:bill,
+      state:opt.dataset.state||'',city:opt.dataset.city||'',
+      totalAmount:total,totalPaid:paid,poBalance:total-paid,
+      pmtStatus:document.getElementById('fPmtS').value,
+      shippingStatus:document.getElementById('fShipS').value});
+    closeModal();toast('PO berhasil dibuat!');renderPO();
+  });
+  wirePOFormEvents();
+}
+function openEditPO(id){
+  const r=PURCHASE_ORDERS.find(x=>x.id===id);if(!r)return;
+  openModal('Edit Purchase Order',poForm(r),()=>{
+    const sel=document.getElementById('fSup');
+    const opt=sel.options[sel.selectedIndex];
+    const total=+document.getElementById('fTotal').value||0;
+    const paid=+document.getElementById('fPaid').value||0;
+    r.supplierId=sel.value;r.supplierName=opt.text;
+    r.state=opt.dataset.state||'';r.city=opt.dataset.city||'';
+    r.billNum=document.getElementById('fBill').value.trim();
+    r.totalAmount=total;r.totalPaid=paid;r.poBalance=total-paid;
+    r.pmtStatus=document.getElementById('fPmtS').value;
+    r.shippingStatus=document.getElementById('fShipS').value;
+    closeModal();toast('PO diupdate!');renderPO();
+  });
+  wirePOFormEvents(r);
+}
+function delPO(id){
+  if(!confirm('Hapus PO ini? Detail terkait juga akan dihapus.'))return;
+  PURCHASE_ORDERS=PURCHASE_ORDERS.filter(x=>x.id!==id);
+  PURCHASE_DETAILS=PURCHASE_DETAILS.filter(x=>x.poId!==id);
+  toast('PO dihapus!');renderPO();renderPD('');
+}
+
+// ══════════════════════════════════════════════════
+//  SALES
+// ══════════════════════════════════════════════════
+let soQ='',soPage=1;
+let soBuilderRows=[]; // temp rows while building a new SO
+function pgSales(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Sales</h1><p>Kelola Sales Orders (RANGESO + RANGESD)</p></div>
+<div class="tc">
+  <div class="ta">
+    <div class="btn-grp"><button class="btn btn-pr" id="btnAddSO"><i class="fas fa-plus"></i> Buat SO Baru</button></div>
+    <input class="si" placeholder="Cari SO ID / customer / invoice..." id="soSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>SO Date</th><th>SO ID</th><th>Customer ID</th><th>Customer Name</th>
+    <th>Invoice Num</th><th>State</th><th>City</th><th>Total SO Amount</th>
+    <th>Total Received</th><th>SO Balance</th><th>Receipt Status</th><th>Aksi</th></tr></thead>
+    <tbody id="soTb"></tbody>
+  </table></div>
+  <div id="soPg" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>
+<div class="tc">
+  <div class="ta">
+    <h3 style="margin:0">Sales Details (RANGESD)</h3>
+    <input class="si" placeholder="Cari SO ID / item / customer..." id="sdSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>SO Date</th><th>SO ID</th><th>Detail ID</th><th>Customer Name</th><th>State</th><th>City</th>
+    <th>Invoice Num</th><th>Item Name</th><th>Item Type</th><th>Item Category</th>
+    <th>QTY Sold</th><th>Unit Price</th><th>Price Incl Tax</th><th>Shipping Fees</th><th>Total Sales Price</th></tr></thead>
+    <tbody id="sdTb"></tbody>
+  </table></div>
+</div>`;
+  document.getElementById('btnAddSO').addEventListener('click',openAddSO);
+  document.getElementById('soSi').addEventListener('input',function(){soQ=this.value;soPage=1;renderSO();});
+  document.getElementById('sdSi').addEventListener('input',function(){renderSD(this.value);});
+  renderSO();renderSD('');
+}
+function renderSO(){
+  const fil=filterData(SALES_ORDERS,soQ,['soId','customerName','invoiceNum','state','city','receiptStatus']);
+  const {data,total,page}=paginate(fil,soPage);
+  soPage=page;
+  document.getElementById('soTb').innerHTML=data.map(r=>`<tr>
+    <td>${r.soDate}</td><td>${r.soId}</td><td>${r.customerId}</td><td>${r.customerName}</td>
+    <td>${r.invoiceNum}</td><td>${r.state}</td><td>${r.city}</td>
+    <td>${fmtRp(r.totalSOAmount)}</td><td>${fmtRp(r.totalReceived)}</td>
+    <td><span class="badge ${r.soBalance>0?'br':'bg'}">${fmtRp(r.soBalance)}</span></td>
+    <td>${badge(r.receiptStatus)}</td>
+    <td><button class="btn btn-ol btn-sm" data-view="${r.soId}"><i class="fas fa-eye"></i></button>
+        <button class="btn btn-dn btn-sm" data-del="${r.soId}"><i class="fas fa-trash"></i></button></td>
+  </tr>`).join('')||'<tr><td colspan="12" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+  document.querySelectorAll('#soTb [data-view]').forEach(b=>b.addEventListener('click',()=>viewSODetails(b.dataset.view)));
+  document.querySelectorAll('#soTb [data-del]').forEach(b=>b.addEventListener('click',()=>delSO(b.dataset.del)));
+  renderPager('soPg',total,soPage,p=>{soPage=p;renderSO();});
+}
+function renderSD(q){
+  const fil=filterData(SALES_DETAILS,q,['soId','customerName','itemName','itemType','invoiceNum']);
+  document.getElementById('sdTb').innerHTML=fil.map(r=>`<tr>
+    <td>${r.soDate}</td><td>${r.soId}</td><td>${r.detailId}</td><td>${r.customerName}</td>
+    <td>${r.state}</td><td>${r.city}</td><td>${r.invoiceNum}</td>
+    <td>${r.itemName}</td><td>${r.itemType}</td><td>${r.itemCategory}</td>
+    <td>${fmtNum(r.qtySold)}</td><td>${fmtRp(r.unitPrice)}</td><td>${fmtRp(r.priceInclTax)}</td>
+    <td>${fmtRp(r.shippingFees)}</td><td>${fmtRp(r.totalSalesPrice)}</td>
+  </tr>`).join('')||'<tr><td colspan="15" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+}
+function viewSODetails(soId){
+  const so=SALES_ORDERS.find(x=>x.soId===soId);if(!so)return;
+  const dets=SALES_DETAILS.filter(x=>x.soId===soId);
+  openModal(`Detail SO: ${soId}`,`
+<div class="fr">
+  <div class="fg2"><label>SO Date</label><input readonly value="${so.soDate}" style="opacity:.7"></div>
+  <div class="fg2"><label>Customer Name</label><input readonly value="${so.customerName}" style="opacity:.7"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Invoice Num</label><input readonly value="${so.invoiceNum}" style="opacity:.7"></div>
+  <div class="fg2"><label>Receipt Status</label><input readonly value="${so.receiptStatus}" style="opacity:.7"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Total SO Amount</label><input readonly value="${fmtRp(so.totalSOAmount)}" style="opacity:.7"></div>
+  <div class="fg2"><label>SO Balance</label><input readonly value="${fmtRp(so.soBalance)}" style="opacity:.7"></div>
+</div>
+<div class="dt-card"><h4>Sales Details</h4>
+<div class="tw"><table>
+<thead><tr><th>Detail ID</th><th>Item Name</th><th>Item Type</th><th>QTY Sold</th><th>Unit Price</th><th>Price Incl Tax</th><th>Shipping</th><th>Total Sales Price</th></tr></thead>
+<tbody>${dets.map(d=>`<tr><td>${d.detailId}</td><td>${d.itemName}</td><td>${d.itemType}</td>
+  <td>${fmtNum(d.qtySold)}</td><td>${fmtRp(d.unitPrice)}</td><td>${fmtRp(d.priceInclTax)}</td>
+  <td>${fmtRp(d.shippingFees)}</td><td>${fmtRp(d.totalSalesPrice)}</td></tr>`).join('')||
+  '<tr><td colspan="8" style="text-align:center;color:#8fae9a">Tidak ada detail</td></tr>'}</tbody>
+</table></div></div>`,null);
+}
+function soDetailRowsHTML(){
+  if(soBuilderRows.length===0)return'<p style="color:#8fae9a;font-size:.8rem">Belum ada item ditambahkan.</p>';
+  return`<table style="margin-top:6px;width:100%"><thead><tr><th>Item</th><th>QTY</th><th>Unit Price</th><th>Total</th><th></th></tr></thead>
+  <tbody>${soBuilderRows.map((r,i)=>`<tr><td>${r.itemName}</td><td>${r.qtySold}</td><td>${fmtRp(r.unitPrice)}</td><td>${fmtRp(r.totalSalesPrice)}</td>
+  <td><button class="btn btn-dn btn-sm" data-rem="${i}"><i class="fas fa-times"></i></button></td></tr>`).join('')}</tbody></table>`;
+}
+function refreshSOBuilderUI(){
+  document.getElementById('soDetailRows').innerHTML=soDetailRowsHTML();
+  const totalAll=soBuilderRows.reduce((s,r)=>s+r.totalSalesPrice,0);
+  document.getElementById('fTotal').value=fmtRp(totalAll);
+  document.querySelectorAll('#soDetailRows [data-rem]').forEach(b=>{
+    b.addEventListener('click',()=>{soBuilderRows.splice(+b.dataset.rem,1);refreshSOBuilderUI();});
+  });
+}
+function openAddSO(){
+  soBuilderRows=[];
+  const cusOpts=CUSTOMERS.map(c=>`<option value="${c.id}" data-name="${c.name}" data-state="${c.state}" data-city="${c.city}">${c.name}</option>`).join('');
+  const invOpts=INVENTORY.map(i=>`<option value="${i.id}" data-name="${i.name}" data-type="${i.type}" data-cat="${i.category}" data-sub="${i.subcategory}">${i.name}</option>`).join('');
+  const soId=genId('SO',SALES_ORDERS,'soId');
+  openModal('Buat Sales Order',`
+<div class="fr">
+  <div class="fg2"><label>SO Date</label><input id="fDate" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+  <div class="fg2"><label>SO ID (auto)</label><input readonly value="${soId}" style="opacity:.7"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Customer *</label><select id="fCus">${cusOpts}</select></div>
+  <div class="fg2"><label>Invoice Num</label><input id="fInv" placeholder="INV-xxx"></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>State</label><input id="fState" readonly style="opacity:.7"></div>
+  <div class="fg2"><label>City</label><input id="fCity" readonly style="opacity:.7"></div>
+</div>
+<div class="dt-card"><h4>Tambah Item Detail</h4>
+  <div class="add-detail-row">
+    <div class="fg2" style="flex:2"><label>Item</label><select id="addItem">${invOpts}</select></div>
+    <div class="fg2"><label>QTY</label><input id="addQty" type="number" value="1" min="1"></div>
+    <div class="fg2"><label>Unit Price</label><input id="addPrice" type="number" value="0"></div>
+    <div class="fg2"><label>Shipping</label><input id="addShip" type="number" value="0"></div>
+    <div class="fg2" style="display:flex;align-items:flex-end"><button class="btn btn-pr btn-sm" id="btnAddRow"><i class="fas fa-plus"></i> Add</button></div>
+  </div>
+  <div id="soDetailRows"></div>
+</div>
+<div class="fg2" style="margin-top:8px"><label>Total SO Amount (auto)</label><input id="fTotal" readonly value="Rp 0" style="opacity:.7;font-weight:600"></div>`,()=>{
+    if(soBuilderRows.length===0){toast('Tambahkan minimal 1 item detail!',true);return;}
+    const sel=document.getElementById('fCus');
+    const opt=sel.options[sel.selectedIndex];
+    const dateStr=toMDY(document.getElementById('fDate').value);
+    const total=soBuilderRows.reduce((s,r)=>s+r.totalSalesPrice,0);
+    const invoiceNum=document.getElementById('fInv').value;
+    SALES_ORDERS.push({soDate:dateStr,soId,customerId:sel.value,customerName:opt.text,
+      invoiceNum,state:document.getElementById('fState').value,city:document.getElementById('fCity').value,
+      totalSOAmount:total,totalReceived:0,soBalance:total,receiptStatus:'Pending'});
+    soBuilderRows.forEach(r=>{
+      r.customerId=sel.value;r.customerName=opt.text;
+      r.state=document.getElementById('fState').value;r.city=document.getElementById('fCity').value;
+      r.invoiceNum=invoiceNum;
+      SALES_DETAILS.push(r);
+    });
+    closeModal();toast('SO berhasil dibuat!');renderSO();renderSD('');
+  });
+  const cusSel=document.getElementById('fCus');
+  const fillCusLoc=()=>{
+    const opt=cusSel.options[cusSel.selectedIndex];
+    document.getElementById('fState').value=opt.dataset.state||'';
+    document.getElementById('fCity').value=opt.dataset.city||'';
+  };
+  cusSel.addEventListener('change',fillCusLoc);fillCusLoc();
+  document.getElementById('btnAddRow').addEventListener('click',()=>{
+    const itemSel=document.getElementById('addItem');
+    const opt=itemSel.options[itemSel.selectedIndex];
+    const qty=+document.getElementById('addQty').value||1;
+    const price=+document.getElementById('addPrice').value||0;
+    const ship=+document.getElementById('addShip').value||0;
+    const priceInclTax=Math.round(price*1.1);
+    const total=qty*priceInclTax+ship;
+    soBuilderRows.push({soDate:toMDY(new Date()),soId,detailId:genId('SD',SALES_DETAILS,'detailId'),
+      customerId:'',customerName:'',state:'',city:'',invoiceNum:'',
+      itemName:opt.text,itemId:opt.value,itemType:opt.dataset.type,
+      itemCategory:opt.dataset.cat,itemSubcategory:opt.dataset.sub,
+      qtySold:qty,unitPrice:price,priceInclTax,shippingFees:ship,totalSalesPrice:total});
+    refreshSOBuilderUI();
+  });
+  refreshSOBuilderUI();
+}
+function delSO(soId){
+  if(!confirm('Hapus SO ini? Detail terkait juga akan dihapus.'))return;
+  SALES_ORDERS=SALES_ORDERS.filter(x=>x.soId!==soId);
+  SALES_DETAILS=SALES_DETAILS.filter(x=>x.soId!==soId);
+  toast('SO dihapus!');renderSO();renderSD('');
+}
+
+// ══════════════════════════════════════════════════
+//  RECEIPTS
+// ══════════════════════════════════════════════════
+let rcQ='',rcPage=1;
+function pgReceipts(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Receipts</h1><p>Penerimaan pembayaran dari pelanggan (RANGERECEIPTS)</p></div>
+<div class="tc">
+  <div class="ta">
+    <div class="btn-grp"><button class="btn btn-pr" id="btnAddRC"><i class="fas fa-plus"></i> Tambah Receipt</button></div>
+    <input class="si" placeholder="Cari Trx ID / customer / SO..." id="rcSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Trx Date</th><th>Trx ID</th><th>Customer ID</th><th>Customer Name</th>
+    <th>State</th><th>City</th><th>SO ID</th><th>Invoice Num</th><th>PMT Mode</th><th>Amount Received</th><th>Aksi</th></tr></thead>
+    <tbody id="rcTb"></tbody>
+  </table></div>
+  <div id="rcPg" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>`;
+  document.getElementById('btnAddRC').addEventListener('click',openAddRC);
+  document.getElementById('rcSi').addEventListener('input',function(){rcQ=this.value;rcPage=1;renderRC();});
+  renderRC();
+}
+function renderRC(){
+  const fil=filterData(RECEIPTS,rcQ,['trxId','customerName','soId','invoiceNum','pmtMode']);
+  const {data,total,page}=paginate(fil,rcPage);
+  rcPage=page;
+  document.getElementById('rcTb').innerHTML=data.map(r=>`<tr>
+    <td>${r.trxDate}</td><td>${r.trxId}</td><td>${r.customerId}</td><td>${r.customerName}</td>
+    <td>${r.state}</td><td>${r.city}</td><td>${r.soId}</td><td>${r.invoiceNum}</td>
+    <td>${r.pmtMode}</td><td>${fmtRp(r.amountReceived)}</td>
+    <td><button class="btn btn-ol btn-sm" data-edit="${r.trxId}"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-dn btn-sm" data-del="${r.trxId}"><i class="fas fa-trash"></i></button></td>
+  </tr>`).join('')||'<tr><td colspan="11" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+  document.querySelectorAll('#rcTb [data-edit]').forEach(b=>b.addEventListener('click',()=>openEditRC(b.dataset.edit)));
+  document.querySelectorAll('#rcTb [data-del]').forEach(b=>b.addEventListener('click',()=>delRC(b.dataset.del)));
+  renderPager('rcPg',total,rcPage,p=>{rcPage=p;renderRC();});
+}
+function rcForm(d={}){
+  const cusOpts=CUSTOMERS.map(c=>`<option value="${c.id}" data-name="${c.name}" data-state="${c.state}" data-city="${c.city}"${c.id===d.customerId?' selected':''}>${c.name}</option>`).join('');
+  const soOpts=SALES_ORDERS.filter(s=>s.soBalance>0||s.soId===d.soId).map(s=>`<option value="${s.soId}" data-inv="${s.invoiceNum}"${s.soId===d.soId?' selected':''}>${s.soId} (${s.customerName})</option>`).join('');
+  return`
+<div class="fr">
+  <div class="fg2"><label>Trx Date</label><input id="fDate" type="date" value="${d.trxDate?new Date(d.trxDate).toISOString().slice(0,10):new Date().toISOString().slice(0,10)}"></div>
+  <div class="fg2"><label>Trx ID (auto)</label><input readonly value="${d.trxId||genId('RT',RECEIPTS,'trxId')}" id="fTrxId" style="opacity:.7"></div>
+</div>
+<div class="fg2"><label>Customer *</label><select id="fCus">${cusOpts}</select></div>
+<div class="fr">
+  <div class="fg2"><label>State</label><input id="fState" value="${d.state||''}" readonly style="opacity:.7"></div>
+  <div class="fg2"><label>City</label><input id="fCity" value="${d.city||''}" readonly style="opacity:.7"></div>
+</div>
+<div class="fg2"><label>SO ID</label><select id="fSO">${soOpts}</select></div>
+<div class="fr">
+  <div class="fg2"><label>Invoice Num</label><input id="fInv" value="${d.invoiceNum||''}" readonly style="opacity:.7"></div>
+  <div class="fg2"><label>PMT Mode</label><select id="fPmt">${dimSel('PMT Mode',d.pmtMode)}</select></div>
+</div>
+<div class="fg2"><label>Amount Received (Rp)</label><input id="fAmt" type="number" value="${d.amountReceived||0}"></div>`;}
+function wireRCFormEvents(){
+  const cusSel=document.getElementById('fCus');
+  const fillCus=()=>{
+    const opt=cusSel.options[cusSel.selectedIndex];
+    document.getElementById('fState').value=opt.dataset.state||'';
+    document.getElementById('fCity').value=opt.dataset.city||'';
+  };
+  cusSel.addEventListener('change',fillCus);fillCus();
+  const soSel=document.getElementById('fSO');
+  const fillInv=()=>{
+    const opt=soSel.options[soSel.selectedIndex];
+    document.getElementById('fInv').value=opt?opt.dataset.inv||'':'';
+  };
+  soSel.addEventListener('change',fillInv);fillInv();
+}
+function openAddRC(){
+  openModal('Tambah Receipt',rcForm(),()=>{
+    const cusSel=document.getElementById('fCus');
+    const cusOpt=cusSel.options[cusSel.selectedIndex];
+    const soSel=document.getElementById('fSO');
+    const dateStr=toMDY(document.getElementById('fDate').value);
+    RECEIPTS.push({trxDate:dateStr,trxId:document.getElementById('fTrxId').value,
+      customerId:cusSel.value,customerName:cusOpt.text,
+      state:document.getElementById('fState').value,city:document.getElementById('fCity').value,
+      soId:soSel.value||'',invoiceNum:document.getElementById('fInv').value,
+      pmtMode:document.getElementById('fPmt').value,
+      amountReceived:+document.getElementById('fAmt').value||0});
+    closeModal();toast('Receipt ditambahkan!');renderRC();
+  });
+  wireRCFormEvents();
+}
+function openEditRC(trxId){
+  const r=RECEIPTS.find(x=>x.trxId===trxId);if(!r)return;
+  openModal('Edit Receipt',rcForm(r),()=>{
+    const cusSel=document.getElementById('fCus');
+    const cusOpt=cusSel.options[cusSel.selectedIndex];
+    const soSel=document.getElementById('fSO');
+    r.customerId=cusSel.value;r.customerName=cusOpt.text;
+    r.state=document.getElementById('fState').value;r.city=document.getElementById('fCity').value;
+    r.soId=soSel.value||'';r.invoiceNum=document.getElementById('fInv').value;
+    r.pmtMode=document.getElementById('fPmt').value;
+    r.amountReceived=+document.getElementById('fAmt').value||0;
+    closeModal();toast('Receipt diupdate!');renderRC();
+  });
+  wireRCFormEvents();
+}
+function delRC(trxId){
+  if(!confirm('Hapus receipt ini?'))return;
+  RECEIPTS=RECEIPTS.filter(x=>x.trxId!==trxId);toast('Receipt dihapus!');renderRC();
+}
+
+// ══════════════════════════════════════════════════
+//  PAYMENTS
+// ══════════════════════════════════════════════════
+let ptQ='',ptPage=1;
+function pgPayments(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Payments</h1><p>Pembayaran ke supplier (RANGEPAYMENTS)</p></div>
+<div class="tc">
+  <div class="ta">
+    <div class="btn-grp"><button class="btn btn-pr" id="btnAddPT"><i class="fas fa-plus"></i> Tambah Payment</button></div>
+    <input class="si" placeholder="Cari Trx ID / supplier / PO..." id="ptSi">
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Trx Date</th><th>Trx ID</th><th>Supplier ID</th><th>Supplier Name</th>
+    <th>State</th><th>City</th><th>PO ID</th><th>Bill Num</th><th>PMT Mode</th><th>Amount Paid</th><th>Aksi</th></tr></thead>
+    <tbody id="ptTb"></tbody>
+  </table></div>
+  <div id="ptPg" style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>`;
+  document.getElementById('btnAddPT').addEventListener('click',openAddPT);
+  document.getElementById('ptSi').addEventListener('input',function(){ptQ=this.value;ptPage=1;renderPT();});
+  renderPT();
+}
+function renderPT(){
+  const fil=filterData(PAYMENTS,ptQ,['trxId','supplierName','poId','billNum','pmtMode']);
+  const {data,total,page}=paginate(fil,ptPage);
+  ptPage=page;
+  document.getElementById('ptTb').innerHTML=data.map(r=>`<tr>
+    <td>${r.trxDate}</td><td>${r.trxId}</td><td>${r.supplierId}</td><td>${r.supplierName}</td>
+    <td>${r.state}</td><td>${r.city}</td><td>${r.poId}</td><td>${r.billNum}</td>
+    <td>${r.pmtMode}</td><td>${fmtRp(r.amountPaid)}</td>
+    <td><button class="btn btn-ol btn-sm" data-edit="${r.trxId}"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-dn btn-sm" data-del="${r.trxId}"><i class="fas fa-trash"></i></button></td>
+  </tr>`).join('')||'<tr><td colspan="11" style="text-align:center;padding:20px;color:#8fae9a">Tidak ada data</td></tr>';
+  document.querySelectorAll('#ptTb [data-edit]').forEach(b=>b.addEventListener('click',()=>openEditPT(b.dataset.edit)));
+  document.querySelectorAll('#ptTb [data-del]').forEach(b=>b.addEventListener('click',()=>delPT(b.dataset.del)));
+  renderPager('ptPg',total,ptPage,p=>{ptPage=p;renderPT();});
+}
+function ptForm(d={}){
+  const supOpts=SUPPLIERS.map(s=>`<option value="${s.id}" data-name="${s.name}" data-state="${s.state}" data-city="${s.city}"${s.id===d.supplierId?' selected':''}>${s.name}</option>`).join('');
+  const poOpts=PURCHASE_ORDERS.filter(p=>p.poBalance>0||p.id===d.poId).map(p=>`<option value="${p.id}" data-bill="${p.billNum}"${p.id===d.poId?' selected':''}>${p.id} (${p.supplierName})</option>`).join('');
+  return`
+<div class="fr">
+  <div class="fg2"><label>Trx Date</label><input id="fDate" type="date" value="${d.trxDate?new Date(d.trxDate).toISOString().slice(0,10):new Date().toISOString().slice(0,10)}"></div>
+  <div class="fg2"><label>Trx ID (auto)</label><input readonly value="${d.trxId||genId('PT',PAYMENTS,'trxId')}" id="fTrxId" style="opacity:.7"></div>
+</div>
+<div class="fg2"><label>Supplier *</label><select id="fSup">${supOpts}</select></div>
+<div class="fr">
+  <div class="fg2"><label>State</label><input id="fState" value="${d.state||''}" readonly style="opacity:.7"></div>
+  <div class="fg2"><label>City</label><input id="fCity" value="${d.city||''}" readonly style="opacity:.7"></div>
+</div>
+<div class="fg2"><label>PO ID</label><select id="fPO">${poOpts}</select></div>
+<div class="fr">
+  <div class="fg2"><label>Bill Num</label><input id="fBill" value="${d.billNum||''}" readonly style="opacity:.7"></div>
+  <div class="fg2"><label>PMT Mode</label><select id="fPmt">${dimSel('PMT Mode',d.pmtMode)}</select></div>
+</div>
+<div class="fg2"><label>Amount Paid (Rp)</label><input id="fAmt" type="number" value="${d.amountPaid||0}"></div>`;}
+function wirePTFormEvents(){
+  const supSel=document.getElementById('fSup');
+  const fillSup=()=>{
+    const opt=supSel.options[supSel.selectedIndex];
+    document.getElementById('fState').value=opt.dataset.state||'';
+    document.getElementById('fCity').value=opt.dataset.city||'';
+  };
+  supSel.addEventListener('change',fillSup);fillSup();
+  const poSel=document.getElementById('fPO');
+  const fillBill=()=>{
+    const opt=poSel.options[poSel.selectedIndex];
+    document.getElementById('fBill').value=opt?opt.dataset.bill||'':'';
+  };
+  poSel.addEventListener('change',fillBill);fillBill();
+}
+function openAddPT(){
+  openModal('Tambah Payment',ptForm(),()=>{
+    const supSel=document.getElementById('fSup');
+    const supOpt=supSel.options[supSel.selectedIndex];
+    const poSel=document.getElementById('fPO');
+    const dateStr=toMDY(document.getElementById('fDate').value);
+    PAYMENTS.push({trxDate:dateStr,trxId:document.getElementById('fTrxId').value,
+      supplierId:supSel.value,supplierName:supOpt.text,
+      state:document.getElementById('fState').value,city:document.getElementById('fCity').value,
+      poId:poSel.value||'',billNum:document.getElementById('fBill').value,
+      pmtMode:document.getElementById('fPmt').value,
+      amountPaid:+document.getElementById('fAmt').value||0});
+    closeModal();toast('Payment ditambahkan!');renderPT();
+  });
+  wirePTFormEvents();
+}
+function openEditPT(trxId){
+  const r=PAYMENTS.find(x=>x.trxId===trxId);if(!r)return;
+  openModal('Edit Payment',ptForm(r),()=>{
+    const supSel=document.getElementById('fSup');
+    const supOpt=supSel.options[supSel.selectedIndex];
+    const poSel=document.getElementById('fPO');
+    r.supplierId=supSel.value;r.supplierName=supOpt.text;
+    r.state=document.getElementById('fState').value;r.city=document.getElementById('fCity').value;
+    r.poId=poSel.value||'';r.billNum=document.getElementById('fBill').value;
+    r.pmtMode=document.getElementById('fPmt').value;
+    r.amountPaid=+document.getElementById('fAmt').value||0;
+    closeModal();toast('Payment diupdate!');renderPT();
+  });
+  wirePTFormEvents();
+}
+function delPT(trxId){
+  if(!confirm('Hapus payment ini?'))return;
+  PAYMENTS=PAYMENTS.filter(x=>x.trxId!==trxId);toast('Payment dihapus!');renderPT();
+}
+
+// ══════════════════════════════════════════════════
+//  REPORTS
+// ══════════════════════════════════════════════════
+function pgReports(){
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Reports</h1><p>Laporan keuangan & operasional</p></div>
+<div class="tabs">
+  <button class="tab-btn active" data-tab="tabSales">Sales Report</button>
+  <button class="tab-btn" data-tab="tabPurchase">Purchase Report</button>
+  <button class="tab-btn" data-tab="tabInventory">Inventory Report</button>
+  <button class="tab-btn" data-tab="tabFinancial">Financial Report</button>
+</div>
+<div id="tabSales" class="tab-pane active"></div>
+<div id="tabPurchase" class="tab-pane"></div>
+<div id="tabInventory" class="tab-pane"></div>
+<div id="tabFinancial" class="tab-pane"></div>`;
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>{
+    b.addEventListener('click',()=>switchTab(b,b.dataset.tab));
+  });
+  renderRptSales();renderRptPurchase();renderRptInventory();renderRptFinancial();
+}
+function rptFilterBar(id){
+  return`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+    <input class="si" id="${id}Q" style="width:240px" placeholder="Filter teks (item/customer/supplier/kota)...">
+  </div>`;
+}
+function wireRptFilter(id,renderFn){
+  const inp=document.getElementById(id+'Q');
+  if(inp)inp.addEventListener('input',function(){renderFn(this.value);});
+}
+function renderRptSales(q){
+  const el=document.getElementById('tabSales');
+  const filtered=q?filterData(SALES_DETAILS,q,['itemName','customerName','itemType','city','state']):SALES_DETAILS;
+  const tot=filtered.reduce((s,r)=>s+(r.totalSalesPrice||0),0);
+  const qty=filtered.reduce((s,r)=>s+(r.qtySold||0),0);
+  el.innerHTML=`
+<div class="tc">
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><h3><i class="fas fa-list"></i>Total Records</h3><h2>${filtered.length}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-chart-line"></i>Total Sales</h3><h2>${fmtRp(tot)}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-boxes"></i>Total QTY</h3><h2>${fmtNum(qty)}</h2></div>
+  </div>
+  ${rptFilterBar('rptS')}
+  <div class="tw"><table>
+    <thead><tr><th>SO Date</th><th>SO ID</th><th>Customer Name</th><th>State</th><th>City</th>
+    <th>Item Name</th><th>Item Type</th><th>QTY Sold</th><th>Unit Price</th><th>Price Incl Tax</th><th>Shipping</th><th>Total Sales Price</th></tr></thead>
+    <tbody>${filtered.map(r=>`<tr>
+      <td>${r.soDate}</td><td>${r.soId}</td><td>${r.customerName}</td><td>${r.state}</td><td>${r.city}</td>
+      <td>${r.itemName}</td><td>${r.itemType}</td><td>${fmtNum(r.qtySold)}</td>
+      <td>${fmtRp(r.unitPrice)}</td><td>${fmtRp(r.priceInclTax)}</td>
+      <td>${fmtRp(r.shippingFees)}</td><td>${fmtRp(r.totalSalesPrice)}</td></tr>`).join('')||'<tr><td colspan="12" style="text-align:center;color:#8fae9a">Tidak ada data</td></tr>'}</tbody>
+  </table></div>
+</div>`;
+  wireRptFilter('rptS',renderRptSales);
+}
+function renderRptPurchase(q){
+  const el=document.getElementById('tabPurchase');
+  const filtered=q?filterData(PURCHASE_DETAILS,q,['itemName','supplierName','itemType','city','state']):PURCHASE_DETAILS;
+  const tot=filtered.reduce((s,r)=>s+(r.totalPurchasePrice||0),0);
+  const qty=filtered.reduce((s,r)=>s+(r.qtyPurchased||0),0);
+  el.innerHTML=`
+<div class="tc">
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><h3><i class="fas fa-list"></i>Total Records</h3><h2>${filtered.length}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-shopping-cart"></i>Total Purchases</h3><h2>${fmtRp(tot)}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-boxes"></i>Total QTY</h3><h2>${fmtNum(qty)}</h2></div>
+  </div>
+  ${rptFilterBar('rptP')}
+  <div class="tw"><table>
+    <thead><tr><th>Date</th><th>PO ID</th><th>Supplier Name</th><th>State</th><th>City</th>
+    <th>Item Name</th><th>Item Type</th><th>QTY Purchased</th><th>Unit Price</th><th>Total Purchase Price</th></tr></thead>
+    <tbody>${filtered.map(r=>`<tr>
+      <td>${r.date}</td><td>${r.poId}</td><td>${r.supplierName}</td><td>${r.state}</td><td>${r.city}</td>
+      <td>${r.itemName}</td><td>${r.itemType}</td><td>${fmtNum(r.qtyPurchased)}</td>
+      <td>${fmtRp(r.unitPrice)}</td><td>${fmtRp(r.totalPurchasePrice)}</td></tr>`).join('')||'<tr><td colspan="10" style="text-align:center;color:#8fae9a">Tidak ada data</td></tr>'}</tbody>
+  </table></div>
+</div>`;
+  wireRptFilter('rptP',renderRptPurchase);
+}
+function renderRptInventory(q){
+  const el=document.getElementById('tabInventory');
+  const filtered=q?filterData(INVENTORY,q,['name','type','category','subcategory']):INVENTORY;
+  el.innerHTML=`
+<div class="tc">
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><h3><i class="fas fa-boxes"></i>Total Items</h3><h2>${filtered.length}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-exclamation-triangle"></i>Reorder Required</h3><h2 style="color:#f87171">${filtered.filter(x=>x.reorderRequired).length}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-warehouse"></i>Total Remaining</h3><h2>${fmtNum(filtered.reduce((s,r)=>s+(r.remainingQty||0),0))}</h2></div>
+  </div>
+  ${rptFilterBar('rptI')}
+  <div class="tw"><table>
+    <thead><tr><th>Item ID</th><th>Item Name</th><th>Item Type</th><th>Item Category</th><th>Item Subcategory</th>
+    <th>QTY Purchased</th><th>QTY Sold</th><th>Remaining QTY</th><th>Reorder Level</th><th>Reorder Required</th></tr></thead>
+    <tbody>${filtered.map(r=>`<tr>
+      <td>${r.id}</td><td>${r.name}</td><td>${r.type}</td><td>${r.category}</td><td>${r.subcategory}</td>
+      <td>${fmtNum(r.qtyPurchased)}</td><td>${fmtNum(r.qtySold)}</td>
+      <td><span class="badge ${r.remainingQty<=r.reorderLevel?'br':'bg'}">${fmtNum(r.remainingQty)}</span></td>
+      <td>${fmtNum(r.reorderLevel)}</td><td>${r.reorderRequired?'<span class="badge br">Yes</span>':'<span class="badge bg">No</span>'}</td></tr>`).join('')||'<tr><td colspan="10" style="text-align:center;color:#8fae9a">Tidak ada data</td></tr>'}</tbody>
+  </table></div>
+</div>`;
+  wireRptFilter('rptI',renderRptInventory);
+}
+function renderRptFinancial(){
+  const el=document.getElementById('tabFinancial');
+  const totRec=CUSTOMERS.reduce((s,r)=>s+(r.balance||0),0);
+  const totPay=SUPPLIERS.reduce((s,r)=>s+(r.balance||0),0);
+  const totSales=SALES_DETAILS.reduce((s,r)=>s+(r.totalSalesPrice||0),0);
+  const totPurchases=PURCHASE_DETAILS.reduce((s,r)=>s+(r.totalPurchasePrice||0),0);
+  el.innerHTML=`
+<div class="tc">
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi"><h3><i class="fas fa-receipt"></i>Total Receivable</h3><h2>${fmtRp(totRec)}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-file-invoice-dollar"></i>Total Payable</h3><h2>${fmtRp(totPay)}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-chart-line"></i>Total Sales</h3><h2>${fmtRp(totSales)}</h2></div>
+    <div class="kpi"><h3><i class="fas fa-shopping-cart"></i>Total Purchases</h3><h2>${fmtRp(totPurchases)}</h2></div>
+  </div>
+  <h3 style="color:var(--sc);margin:16px 0 10px">Customers — Balance Receivable</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Customer ID</th><th>Customer Name</th><th>State</th><th>City</th><th>Total Sales</th><th>Total Receipts</th><th>Balance Receivable</th></tr></thead>
+    <tbody>${CUSTOMERS.map(r=>`<tr>
+      <td>${r.id}</td><td>${r.name}</td><td>${r.state}</td><td>${r.city}</td>
+      <td>${fmtRp(r.totalSales)}</td><td>${fmtRp(r.totalReceipts)}</td>
+      <td><span class="badge ${r.balance>0?'br':'bg'}">${fmtRp(r.balance)}</span></td></tr>`).join('')}</tbody>
+  </table></div>
+  <h3 style="color:var(--sc);margin:16px 0 10px">Suppliers — Balance Payable</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Supplier ID</th><th>Supplier Name</th><th>State</th><th>City</th><th>Total Purchases</th><th>Total Payments</th><th>Balance Payable</th></tr></thead>
+    <tbody>${SUPPLIERS.map(r=>`<tr>
+      <td>${r.id}</td><td>${r.name}</td><td>${r.state}</td><td>${r.city}</td>
+      <td>${fmtRp(r.totalPurchases)}</td><td>${fmtRp(r.totalPayments)}</td>
+      <td><span class="badge ${r.balance>0?'br':'bg'}">${fmtRp(r.balance)}</span></td></tr>`).join('')}</tbody>
+  </table></div>
+</div>`;
+}
+
+// ══════════════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════════════
+function pgSettings(){
+  if(CU.role==='Staff'){document.getElementById('pageContent').innerHTML='<div class="tc"><p style="color:#f87171">Akses ditolak — hanya Admin & Manager.</p></div>';return;}
+  document.getElementById('pageContent').innerHTML=`
+<div class="ph"><h1>Settings</h1><p>Konfigurasi aplikasi</p></div>
+<div class="tabs">
+  <button class="tab-btn active" data-tab="stDim">Dimensions</button>
+  <button class="tab-btn" data-tab="stComp">Company Profile</button>
+  <button class="tab-btn" data-tab="stPref">Display Preferences</button>
+  <button class="tab-btn" data-tab="stUsers">Users</button>
+</div>
+<div id="stDim" class="tab-pane active"></div>
+<div id="stComp" class="tab-pane"></div>
+<div id="stPref" class="tab-pane"></div>
+<div id="stUsers" class="tab-pane"></div>`;
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>{
+    b.addEventListener('click',()=>switchTab(b,b.dataset.tab));
+  });
+  renderSettingsDim();renderSettingsComp();renderSettingsPref();renderSettingsUsers();
+}
+function renderSettingsDim(){
+  const el=document.getElementById('stDim');
+  el.innerHTML=`<div class="tc"><h3>Master Dimensions (RANGEDIMENSIONS)</h3>
+<p style="color:#8fae9a;font-size:.82rem;margin-bottom:14px">Kelola nilai master: Item Type, Item Category, Item Subcategory, State, City, PMT Mode, PMT Status, Shipping Status</p>
+${Object.entries(DIM).map(([col,vals])=>`
+<div style="margin-bottom:14px;border:1px solid var(--bc);border-radius:8px;padding:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <strong style="color:var(--sc)">${col}</strong>
+    <button class="btn btn-pr btn-sm" data-addcol="${col}"><i class="fas fa-plus"></i> Tambah</button>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px">
+    ${vals.map(v=>`<span class="badge bb" style="display:inline-flex;align-items:center;gap:4px">
+      ${v} <i class="fas fa-times" style="cursor:pointer;font-size:.7rem" data-delcol="${col}" data-delval="${v}"></i>
+    </span>`).join('')}
+  </div>
+</div>`).join('')}</div>`;
+  document.querySelectorAll('[data-addcol]').forEach(b=>b.addEventListener('click',()=>addDimVal(b.dataset.addcol)));
+  document.querySelectorAll('[data-delcol]').forEach(b=>b.addEventListener('click',()=>delDimVal(b.dataset.delcol,b.dataset.delval)));
+}
+function addDimVal(col){
+  const val=prompt(`Tambah nilai baru untuk "${col}":`);
+  if(!val)return;
+  if(DIM[col].includes(val)){toast('Nilai sudah ada!',true);return;}
+  DIM[col].push(val);toast(`"${val}" ditambahkan ke ${col}!`);renderSettingsDim();
+}
+function delDimVal(col,val){
+  if(!confirm(`Hapus "${val}" dari ${col}?`))return;
+  DIM[col]=DIM[col].filter(v=>v!==val);toast('Nilai dihapus!');renderSettingsDim();
+}
+function renderSettingsComp(){
+  const el=document.getElementById('stComp');
+  el.innerHTML=`<div class="tc"><h3>Company Profile (Script Properties)</h3>
+<div class="fr">
+  <div class="fg2"><label>Company Name</label><input id="cpName" value="${COMPANY.companyName}"></div>
+  <div class="fg2"><label>Company Phone</label><input id="cpPhone" value="${COMPANY.companyPhone}"></div>
+</div>
+<div class="fg2"><label>Company Address</label><input id="cpAddr" value="${COMPANY.companyAddress}"></div>
+<div class="fr">
+  <div class="fg2"><label>Company Email</label><input id="cpEmail" value="${COMPANY.companyEmail}"></div>
+  <div class="fg2"><label>Company Logo URL</label><input id="cpLogo" value="${COMPANY.companyLogoUrl}" placeholder="https://..."></div>
+</div>
+<div style="margin-top:12px"><button class="btn btn-pr" id="btnSaveComp"><i class="fas fa-save"></i> Simpan</button></div>
+</div>`;
+  document.getElementById('btnSaveComp').addEventListener('click',()=>{
+    COMPANY.companyName=document.getElementById('cpName').value;
+    COMPANY.companyPhone=document.getElementById('cpPhone').value;
+    COMPANY.companyAddress=document.getElementById('cpAddr').value;
+    COMPANY.companyEmail=document.getElementById('cpEmail').value;
+    COMPANY.companyLogoUrl=document.getElementById('cpLogo').value;
+    toast('Profil perusahaan disimpan!');
+  });
+}
+function renderSettingsPref(){
+  const el=document.getElementById('stPref');
+  el.innerHTML=`<div class="tc"><h3>Display Preferences (Script Properties)</h3>
+<div class="fr">
+  <div class="fg2"><label>Currency</label>
+    <select id="ppCur"><option ${PREFS.currency==='IDR'?'selected':''}>IDR</option><option ${PREFS.currency==='USD'?'selected':''}>USD</option></select>
+  </div>
+  <div class="fg2"><label>Date Format</label>
+    <select id="ppDate"><option ${PREFS.dateFormat==='DD/MM/YYYY'?'selected':''}>DD/MM/YYYY</option><option ${PREFS.dateFormat==='MM/dd/yyyy'?'selected':''}>MM/dd/yyyy</option></select>
+  </div>
+</div>
+<div class="fg2"><label>Theme</label>
+  <select id="ppTheme"><option value="dark-green-gold" ${PREFS.theme==='dark-green-gold'?'selected':''}>Dark Green & Gold</option>
+    <option value="classic" ${PREFS.theme==='classic'?'selected':''}>Classic</option></select>
+</div>
+<div style="margin-top:12px"><button class="btn btn-pr" id="btnSavePref"><i class="fas fa-save"></i> Simpan</button></div>
+</div>`;
+  document.getElementById('btnSavePref').addEventListener('click',()=>{
+    PREFS.currency=document.getElementById('ppCur').value;
+    PREFS.dateFormat=document.getElementById('ppDate').value;
+    PREFS.theme=document.getElementById('ppTheme').value;
+    toast('Preferensi disimpan!');
+  });
+}
+function renderSettingsUsers(){
+  const el=document.getElementById('stUsers');
+  el.innerHTML=`<div class="tc"><h3>Users (Users Sheet)</h3>
+<div style="margin-bottom:12px"><button class="btn btn-pr btn-sm" id="btnAddUser"><i class="fas fa-plus"></i> Tambah User</button></div>
+<div class="tw"><table>
+  <thead><tr><th>User ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Date Added</th><th>Username</th><th>Linked Customer ID</th><th>Aksi</th></tr></thead>
+  <tbody id="usersTb"></tbody>
+</table></div></div>`;
+  document.getElementById('btnAddUser').addEventListener('click',openAddUser);
+  renderUsersTable();
+}
+function renderUsersTable(){
+  document.getElementById('usersTb').innerHTML=USERS.map(u=>`<tr>
+    <td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td>
+    <td>${badge(u.status)}</td><td>${u.dateAdded}</td>
+    <td>${u.username}</td><td>${u.linkedCustomerId||'–'}</td>
+    <td><button class="btn btn-ol btn-sm" data-edit="${u.id}"><i class="fas fa-edit"></i></button>
+        ${u.username!=='admin'?`<button class="btn btn-dn btn-sm" data-del="${u.id}"><i class="fas fa-trash"></i></button>`:''}
+    </td></tr>`).join('')||'<tr><td colspan="9" style="text-align:center;color:#8fae9a">Tidak ada user</td></tr>';
+  document.querySelectorAll('#usersTb [data-edit]').forEach(b=>b.addEventListener('click',()=>openEditUser(b.dataset.edit)));
+  document.querySelectorAll('#usersTb [data-del]').forEach(b=>b.addEventListener('click',()=>delUser(b.dataset.del)));
+}
+function userForm(u={}){
+  const cusOpts=[{id:'',name:'(Tidak ada)'},...CUSTOMERS].map(c=>`<option value="${c.id}"${c.id===u.linkedCustomerId?' selected':''}>${c.name}</option>`).join('');
+  return`
+<div class="fr">
+  <div class="fg2"><label>Name *</label><input id="fuName" value="${u.name||''}"></div>
+  <div class="fg2"><label>Username *</label><input id="fuUser" value="${u.username||''}" ${u.id?'readonly style="opacity:.7"':''}></div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Email</label><input id="fuEmail" type="email" value="${u.email||''}"></div>
+  <div class="fg2"><label>Role</label>
+    <select id="fuRole">${['Admin','Manager','Staff','Viewer'].map(r=>`<option${r===u.role?' selected':''}>${r}</option>`).join('')}</select>
+  </div>
+</div>
+<div class="fr">
+  <div class="fg2"><label>Status</label>
+    <select id="fuStatus">${['Active','Inactive'].map(s=>`<option${s===u.status?' selected':''}>${s}</option>`).join('')}</select>
+  </div>
+  <div class="fg2"><label>Linked Customer ID</label><select id="fuCus">${cusOpts}</select></div>
+</div>
+<div class="fg2"><label>Password ${u.id?'(kosongkan jika tidak diubah)':'*'}</label><input id="fuPwd" type="password" placeholder="Password..."></div>`;}
+function openAddUser(){
+  openModal('Tambah User',userForm(),()=>{
+    const name=document.getElementById('fuName').value.trim();
+    const username=document.getElementById('fuUser').value.trim().toLowerCase();
+    if(!name||!username){toast('Nama dan username wajib diisi!',true);return;}
+    if(USERS.find(u=>u.username===username)){toast('Username sudah ada!',true);return;}
+    const pwd=document.getElementById('fuPwd').value;
+    if(!pwd){toast('Password wajib diisi untuk user baru!',true);return;}
+    ACCOUNTS.push({username,password:pwd,name,role:document.getElementById('fuRole').value});
+    USERS.push({id:genId('U',USERS,'id'),name,email:document.getElementById('fuEmail').value,
+      role:document.getElementById('fuRole').value,status:document.getElementById('fuStatus').value,
+      dateAdded:today(),username,linkedCustomerId:document.getElementById('fuCus').value});
+    closeModal();toast('User ditambahkan!');renderUsersTable();
+  });
+}
+function openEditUser(id){
+  const u=USERS.find(x=>x.id===id);if(!u)return;
+  openModal('Edit User',userForm(u),()=>{
+    u.name=document.getElementById('fuName').value.trim();
+    u.email=document.getElementById('fuEmail').value;
+    u.role=document.getElementById('fuRole').value;
+    u.status=document.getElementById('fuStatus').value;
+    u.linkedCustomerId=document.getElementById('fuCus').value;
+    const pwd=document.getElementById('fuPwd').value;
+    if(pwd){const acct=ACCOUNTS.find(a=>a.username===u.username);if(acct)acct.password=pwd;}
+    closeModal();toast('User diupdate!');renderUsersTable();
+  });
+}
+function delUser(id){
+  const u=USERS.find(x=>x.id===id);if(!u)return;
+  if(!confirm(`Hapus user "${u.name}"?`))return;
+  USERS=USERS.filter(x=>x.id!==id);
+  toast('User dihapus!');renderUsersTable();
+}
+</script>
+</body>
+</html>
